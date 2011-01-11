@@ -1,0 +1,1041 @@
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V3.1//EN">
+
+ToDo:
+
+Talk about what kinds of menus pop up (and how to get rid of them)
+when you don't hit the leaf or brach quite exactly on.
+
+Show in detail every menu and the example given in the text with
+eps screenshots.
+
+
+<book>
+  <bookinfo>
+    <title><application>N-Dex</application> Users Manual</title>
+
+    <author><firstname>Kevin</firstname><surname>Haddock</surname></author>
+
+    <date>26 Nov 2003</date>
+
+<legalnotice>
+
+<mediaobject>
+
+<imageobject>
+
+<imagedata fileref="ndex.home.png" format="png">
+
+</imageobject>
+
+<textobject>
+
+<phrase>
+
+<application>N-Dex</application> main page</phrase>
+
+</textobject>
+<caption>
+<para>Here is the <application>N-Dex</application> main start up
+screen.  </para>
+
+</caption>
+
+</mediaobject>
+
+<para>
+
+<application>N-Dex</application> is free software for
+non-commercial use; you can redistribute it and/or modify it under the
+terms of the Eco-Symmetric Enterprises Public License as published by
+Eco-Symmetric Enterprises either version 1, or (at your option) any
+later version.  </para>
+
+<para> <application>N-Dex</application> is distributed in the
+hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.  See the Eco-Symmetric Enterprises Public License for more
+details.  </para>
+
+<para> You should have received a copy of the Eco-Symmetric
+Enterprises Public License along with
+<application>N-Dex</application>; see the file COPYING.  If not,
+write to: </para>
+
+<para>
+<address>
+Eco-Symmetric Enterprises
+Attn: Kevin Haddock
+<street>975 East Ave. PMB 112</street>
+<city>Chico</city>, <state>CA</state> <postcode> 95926</postcode>
+<country> USA</country>
+<email>kevinhaddock@yahoo.com</email>
+<fax>530-520-2896</fax>
+<phone>530-877-4636</phone>
+
+</address>
+</para>
+</legalnotice>
+
+  </bookinfo>
+<preface>
+<title>Forward</title>
+
+<para>
+
+Since I first read about the Unix operating system, back in the early
+1980's, I had a feeling that, although not the ultimate, it would end
+up being a force to be reckoned with in the industry.  If I were to to
+compare computer operating systems (or language based "virtual
+machines," which were somewhat popular then) in that day with
+automobiles, I would say that MSDOS was somewhat akin to a throw away
+Hyundai, Smalltalk a Austin Martin Lagonda, FORTH a Formula 1 race
+car, Windows a Ford Pinto with the hood welded shut, and Unix a Buick
+GS.  MSDOS was trying to be all things to all people, which made it
+mostly nothing to almost everyone; Windows had some bells and
+whistles, absolutely everyone bought one, but was cheaply constructed
+and likely to blow up on you when you least expected it.  Smalltalk
+was this exciting, sexy thing that almost no one had ever actually
+seen in person.  Unix seemed available at a reasonable price (as
+Xenix), was based on solid concepts, reservedly innovative,
+solidly performing, and was reasonably improvable.  </para>
+
+<para> I worked on more esoteric operating systems, such as OASIS, but
+from an early point I figured that I would live to see the demise of
+such closely held systems.  I liked the concept of FORTH, I'd bet the
+world's first really free operating system (many years before the
+copyleft was likely even a dream in Stallman's mind) </para>
+
+<para> Something about that just felt right.  A system that was well
+designed and free would be hard pressed to die out totally.  However,
+Unix wasn't free at the time (except to University students).  Then
+the book "Xinu is not Unix<footnote>which described in a form of
+pseudo-code the entire inner workings of a Unix kernel</footnote>"
+came out though, and I felt it was only a matter of time before Unix,
+or something close, would be free.  A few years later, MINIX was
+released and I started hacking<footnote>For those not "in the know,"
+"hacking" refers to tinkering and tweaking with a system, whereas
+"cracking" refers to breaching system security, contrary to popular,
+mistaken, media driven belief</footnote> on that with a fervor
+(although I had been on a Tandy 6000 with Xenix for 1/2 dozen years
+before).  </para>
+
+<para>
+Since I already had a good understanding of FORTH and I wanted to know
+more about Unix and C, I undertook to write a FORTH interpreter in C
+for Unix.  I went to the local university (Chico State, California,
+USA) to try and rub elbows with some of the Unix/C gurus and see what
+I could pick up.  Fortunately, they  had almost as much interest in
+FORTH as I did in Unix/C so it made a good match.  Eventually I
+released my FORTH in C (which is a story unto itself) and discovered I
+loved Unix (but not necessarily C).
+
+</para>
+
+<para> There was one part of Unix I especially admired, and I spent
+long hours trying to figure out how to fully exploit it.  That was the
+Unix file-system.  Around 1985 I started writing shell scripts to form
+a classified ad bulletin board system.  My thought was that the Unix
+file-system was uniquely qualified to house these classified ads
+because each ad could appear in multiple places in the file-system
+tree, and under potentially different names by the way of the "hard
+link" mechanism.  I figured I could charge a small amount for each
+kilobyte of file space occupied by the ad, which would include one or
+several links, then charge a small additional amount for each extra
+link.  The more links, the more likely someone was going to find one's
+ad.  </para>
+
+<para> Well, about that time, through one of the contacts I made at
+CSUC, I got a FORTH job in the Sacramento area so my dreams of
+pressing the Unix file-system into extensive use faded by the wayside,
+but I always kept it in the back of my mind.  About 10 years later, I
+found myself interested in legal procedure.  I still didn't use
+Windows to any significant extent, and so naturally had picked up on
+the nroff, TeX, LaTeX trend for generating my motions and pleadings.
+These went naturally hand in hand with Emacs.  Since LISP and FORTH
+are very similar languages (threaded, orthogonal, extensible, stack
+oriented, etc...) I started tinkering around with letting Emacs LISP
+automate some of my document generation.  Also, for several years, I
+was trying to evaluate what language I would ultimately like to
+concentrate my programming efforts into, and although I love FORTH,
+LISP could simply not be ignored because of the Herculean amount of
+effort (naturally effective due to its elegance) that was going into
+developing it.  </para>
+
+<para> Emacs LISP, in particular seemed like a good environment
+because it appeared to be the gateway to using almost any other
+programming language one chose to work in (having the best support for
+formatting/browsing the code, controlling inferior processes,
+debugging, etc...), so in order to be effective in whatever other
+language, it appeared one would really need to understand Emacs LISP
+first.  Sure it lacked a lot of features that Common LISP had, but it
+was rapidly improving and I figured just about the time I would find myself
+needing a feature, it would probably spring into existence at
+the hands of another enthusiast.  Generally this has been true.
+</para>
+
+<para> Around 2000, I decided I might like to take a crack at putting
+a flexible user interface on the Unix file-system.  Actually, first,
+like a fool, I tried (and mostly was successful) at developing a
+resident version of <application>N-Dex</application> that would
+also run under Windows, but most of the way into that I decided that
+it was just too crippled, and I ultimately didn't care if the that
+community had access to this technology.  If they wanted it bad
+enough, someone over there would implement the Unix file-system as I
+sure wasn't going to do it.  I figured Windows was a dead end system
+just like DOS and OASIS had been (and hopefully I could play my part
+in accelerating its ultimate demise with <application> N-Dex
+</application>!).  </para>
+
+<para> In dealing with legal matters, along with all my various other
+sundry interests (being afflicted with the curse of the active mind),
+it became apparent that one could accumulate hundreds if not thousands
+of files, papers, URL's, sound clips, and so forth.  For a time, I
+kept a paper filing system as outlined in the book "Sidetracked Home
+Executives," in which essentially one kept ones files indexed like the
+chapters, sections, subsections, etc... of a book, with a hierarchal
+table of contents and a flat index at the back.  One used a word
+processor or editor in outline mode, and numbered your sections kind
+of like a cross between a BASIC program and an IP address (left lots
+of space between the numbers, e.g. 10, 20, 30, instead of 1, 2, 3, 4,
+etc..., and used a dotted notation, e.g. 10.10.35.80 to denote the
+hierarchy).  Instead of page numbers, each table of contents entry and
+index entry referenced the IP style number (which was also written, in
+pencil, on the tab of the file folder so it could easily be
+renumbered).</para>
+
+<para> The goal was to try and keep the number of items in a file down
+to approximately seven, because, as the theory goes, a person's
+ability to instantly cognize the relationship between things
+dramatically drops off when more than seven items are grouped.  In
+other words, by looking into a file with only seven items, one can
+almost instantly tell if what you are looking for is there or not (or
+if an item you are thinking of adding there actually should be inserted).
+The amount of effort is trivial so searching for an item in the files
+is easy.  One should not have more than seven immediate
+subcategories under each category before breaking them down into
+further sub-subcategories for the same reason.
+</para>
+
+<para> This also kind of goes along with the concepts in the book
+"Information Anxiety" (which I would highly recommend anyone using
+<application> N-Dex </application> should read).  Basically the
+author says that information can be organized in only a couple of
+ways: by Category, Alphabetical or Continuum.  In other words, if your
+data does not naturally fall into a continuum, such as by date,
+alphabetically, or numerically, then you are stuck with categorically,
+and you will find yourself running up against the seven element human
+barrier again.  </para>
+
+<para> One need not get into too much "anxiety" over this human
+barrier, though, because within your filing system, if flexible
+enough, you can start putting items into one folder until you reach
+say seven to ten items, then simply open up the folder and glance at
+them.  They should naturally fall into at least two different
+categories, which means you can open another file or two, place some
+of the items in there, and then adjust the table of contents and
+index<footnote> kept in a word processor file which is easily edited,
+reprinted, and taped on the side of the filing cabinet, where small
+alterations, additions, and/or deletions are just written by hand
+until time for the next adjustment/print cycle</footnote>.  As you
+keep adding, you just simply keep busting up the files when they get
+too large, and eventually, your file indexing system should sort of
+naturally form.  Of course, foresight is always good, and if you
+already have a good feel for the data you are going to be putting in,
+it cannot hurt to establish some minimal skeletal structure, but be
+warned, it is easy to go overboard and make a lot of extra work for
+yourself!  </para>
+
+<para> What <application>N-Dex</application> does is allow one
+to keep multiple indexes and to quickly locate any item based upon the
+intersection of any combination of parts of said indexes.  The process
+is akin to triangulation, whereby a point source of a radio signal,
+for instance, can be located by two directional receivers.  Each
+receiver can tell along which line the transmitter is transmitting,
+but does not know how far, or on which side of the receiver.  By
+comparing the compass angle of two different directional receivers,
+though, and doing some trigonometry, an exact location can be
+determined.  </para>
+
+<para> <application> N-Dex </application>, unlike a
+triangulation, is not limited to only a couple of "angles," and a
+physical landscape.  Indeed, <application> N-Dex </application>
+locates points of information in a mental landscape, taken from as
+many "angles" as the human mind is able to conceive <footnote> Subject
+to the limitations of the underlying file and operating system, which
+is hardly worth mentioning any more, as even the most crippled
+versions of Unix can handle at least millions of files per file-system
+and 32 or more links per file.</footnote>(and describe in words or
+phrases). </para>
+
+<para> Another advantage to using the Unix file-system and the XEmacs
+editor is that there are already many people familiar with them and
+much of the documentation to understand them throughly is already done
+and widely available.  This includes many good tutorials.
+<application> N-Dex </application> is merely the glue that welds
+the parts into a sum that is hopefully the greater.  If one is
+unfamiliar with XEmacs and the Unix file-system, I would suggest you
+skim this manual, go study the those systems in detail (especially from
+the "user level" perspective), then return here with a through read to
+grasp the best understanding.  See the appendix for a list of
+resources where XEmacs and the Unix file-system can be researched.
+</para>
+
+<para>J. Egar Hoover's claim to fame was that he was a highly
+efficient and effective file clerk.  He was so good at telling the
+various presidential administrations who so and so's cousin-in-laws
+were related to in such and such department that it actually got to be
+a political problem.  The promise of <application> N-Dex
+</application> is that we all could become as efficient at sorting,
+storing, mining, and relating information that the average Joe could
+have as big of an impact upon our society, but for liberty and
+justice<footnote>which is usually somewhere on the average Joe's radar
+screen; in stark contrast to the average bureaucrat who, in order to
+immorally pry into things he has no consititutional business, has the
+best information mangagement the average Joe's tax money and credit
+can buy</footnote>, as J. Edgar Hoover did for the power of the FBI.
+Those who would unjustly deprive you of your rights, liberties, and
+country already have info-weapons such as this.  I love the sayings:
+"God made man, but Smith and Wesson made 'um equal!" and "What the
+world needs is a good five dollar phasor weapon!"  Knowlege is power,
+and information is the new currency.  It is prayed that
+<application> N-Dex </application> will level the playing field a
+bit.  I do not fear the average reasonable man having greatly enhanced
+abilities to manage information any more than I fear him having a
+machine gun, bazooka, or tank, because, ultimately, he will most
+likely be using it to watch my back, as I would for him.
+
+</para>
+
+</preface>
+
+<ackno>
+<title> Acknowledgments</title>
+<para>
+There were many people who contributed to this work and who should be
+recognized.  First there are my various mentors and peers who,
+sometimes in just a few words, gave me the big picture about computers
+in general, Unix in particular, and so forth (and also put up with my
+pestering).  In no particular order they are/were: Richard Smith, Ian
+Kluft, Jim Garlick, Glenn Haydon, William Frisbee, and Chuck Moore. 
+</para>
+
+<para>In addition I would like to thank the lovely ladies who have
+been a part of my life, who have put up with my eccentricities and
+with the role of "computer widow."  I would also like to thank the
+friends who have been there for me, even though I sometimes abuse them
+or neglect them when I am so totally engrossed in a project that I
+can't pay the relationship the attention it justly deserves.
+</para>
+</ackno>
+
+<chapter><title>Copying <application>N-Dex</application></title>
+
+
+</chapter>
+
+<chapter><title>Overview of <application>N-Dex</application></title>
+
+<para>
+The human mind thrives on the relationships between things.  We are
+always seeking to divide the world into groups.  Our minds work by
+observing what makes the groups independent, and what they have in
+common.  We can reorganize groups upon a whim, depending on what suits
+us, or adds value to our lives at that instance.  We could, at one
+moment, strive to understand what fundamental different life
+experiences all black people have from all white people, then the next
+try to understand the different experiences that women have from men
+without regard to race.  We seek to classify the animal and plant
+kingdom, particles and waves, and so forth.  Many times, the lines are
+not clearly delineated so we strive to create a category for the
+misfits such as wavicles and protozoans.  Sometimes we simply have to
+place an item in more than one category at the same time and be done
+with it.
+</para>
+
+<para>
+To date, however, our computing machinery/software has only minimally
+recognized how fundamental the dynamic comparison and
+multi-classification is to the human way of thinking.  Most operating
+systems other than Unix do not even support a single file (item)
+showing up in their file-system hierarchy in more than one place.
+Even in Unix, the use of hard links is mostly discounted.  Symbolic
+links are used occasionally, but mostly so a system implementing one
+standard can mimic a system of a different standard, or so standard
+commands and/or files can be easily substituted (such as generic link
+to the X11 server so different actual servers can easily be "switched
+in" without copying large files).
+</para>
+
+<para>
+File managers, for the most part, simply reflect this "flat tree"
+design.  There really isn't a dime's worth of difference between a
+Unix file manager and a Windows one, for the most part.  Matter of
+fact, in the file managers I have seen, it is not even possible to
+create a hard-link (although some allow one to create a symbolic one).
+</para>
+
+<para>I am not going to go into why this feature has or has not been
+utilized, even considering the light of how vital it is to human
+understanding and interaction.  Why do we still mostly use the piston engine
+(which started out as a steam engine, and not a very good one at that)
+when there are so many far superior alternatives?   Tradition?  Vested
+interest?  Familiarity?  Infrastructure?  It doesn't really matter.
+What matters now, is that we have an alternative to the flat tree
+structure with <application>N-Dex</application>.
+
+</para>
+
+<section><title>History of <application>N-Dex</application></title>
+<para>When one boots up <application>N-Dex</application>, he sees the description
+"Persistent N-Dimensional Sparse Array, Editor, and Browser."  A
+little explanation of this phrase is in order.  When I was a young
+programmer (in the early '80s), I consulted for a health food and
+fruit juice manufacturer.  One of the tasks they asked me to do was to
+program a "who bought what" report and a "what was bought by who"
+report.  They had about 300 products, 800 vendors, and they wanted a
+detailed history of how many units ("cases" in most instances) were
+sold going back 13 months.  Here was the rub: Not every product was
+bought by every vendor every month.  Matter of fact, quite the
+opposite was true.  Even though they did a booming business, the three
+dimensional, cubical, array (800 x 300 x 13) that represented their
+sales was, in fact, almost completely empty, relatively speaking.
+Another factor was that a 20 megabyte hard drive was thousands of
+dollars at the time, so space was quite a factor.  The array was going
+to be about 6 megabytes, all that to store a few dozen Kilobytes of
+actual data.  </para>
+
+<para> Although the project was eventually done with the sorting of
+huge text files, a 300 line per minute printer, reports (each of which
+was about 2500 pages), and a new rack of shelves covering the whole
+office wall to house them<footnote>Unfortunately, I was not the chief
+consultant on this project so I could not control the decision of how
+it was done.  Due to the fact that basically the extent of use of the
+reports was merely to facillitate an occasional viewing of a page or
+two by a salesman to see how many cases of goods were bought by a
+client at the same time the previous year, I was pushing for an
+interactive terminal with a browser, but the people who made the
+decision could not personally understand the complex data-structure I
+had designed to make it work, so they went with what they could
+understand.  In other words, <emphasis>they</emphasis> did not have
+the programming or conceptual ability to make it work, so
+automatically, I must not have that ability either.  It must be said
+here, that they were BASIC programmers who didn't even really know how
+to do things such as recursion!</footnote>this got
+me thinking about sparse arrays, how they could be implemented,
+browsed, and edited.
+
+</para>
+
+<para>At about the same time I was working with the previous company,
+I was seriously studying how the hard link feature of the Unix
+file-system could be exploited, for example, for such a task. I,
+almost immediately, recognized it as not only a 3 dimensional sparse
+array, like in the above example, but actually an N dimensional sparse
+array.  Not only that, but the file-system did not have flat continuum
+indices (such as customer number, product number, or month), but
+hierarchical and categorical ones.  An item/file in the array would
+have a nexus into every index in which it had a link.  Some items
+could be linked into only one dimension (such as is usually the case
+with Unix and other file systems).  Other items could have dozens (or
+any number in between).
+
+</para>
+
+<para>Now a method needed to be conceived of how to empower a human hand
+and mind to get an effective handle on such a  hyper-spacial creature (the
+N-Dimensional sparse array).  After some crude attempts, and about a
+dozen years of sidetracking with various disruptions of life, in the
+late 90's it all came together.  </para>
+
+</section>
+
+<section><title>Basic Interaction</title>
+<para>In order to effectively operate <application>N-Dex</application>, one should have,
+not only a basic understanding of the Unix file-system, but of the
+operation of XEmacs.  As is typical for XEmacs, the left mouse button
+moves the cursor, such as to an input field, or the mini-buffer.  The
+middle mouse button is used for selecting items from a list (or paste
+the selected text, if relevant), and the right mouse button is used to
+pop up menus.  When one starts <application>N-Dex</application>, one sees several buttons
+at the top, and a single solitary slash at about the middle of the
+buffer (which will be the last character in the buffer).  If you
+position your mouse cursor over that slash, or the couple of spaces to
+the left of it, generally (depending on how your system's fonts and
+faces are configured), you will see it change color<footnote>
+ On my system, which is vanilla XEmacs "right out of the box," the
+ background is white, and the characters are black.
+ When I position my cursor over the slash, the background changes to
+ light green. </footnote>.  </para>
+
+<para>
+This changing of color is one way you can tell that <application>N-Dex</application> is
+alive and well and listening to you.  If it does not change color, or
+the slash does not appear, something is wrong, and you should refer to
+the appendix on troubleshooting.
+</para>
+
+<para>This slash constitutes the first of a downward growing stack of
+"angles."  Each angle consists of a "root" branch (what you see
+represented by the slash), zero or more subbranches, and zero or one
+leaves, each of which appears in the buffer as something resembling
+the "path" to a file or directory.  If you hit the left mouse button
+on the slash, you will notice that XEmacs' cursor moves
+there<footnote>as distinguished from the mouse cursor, which moves
+with the mouse regardless of what button is pushed</footnote>.  If you
+hit the middle button<footnote>On installations that only have two
+button mice, usually the middle button is simulated by pressing down
+on both buttons simultaneously.  If you have one of these
+installations you will have to remember that when I am referring to
+the middle button, I actually mean both buttons</footnote>, you will
+get a pop-up menu called the "Branch Command Menu."  If you hit the
+right mouse button, you will get a menu with the name of that branch
+consisting of the first item labeled as "New Angle," a
+line<footnote>right now consisting of an underscored dash and several
+more dashes due to a bug in the widgets package upon which <application>N-Dex</application>
+relies</footnote>, a series of zero or more sub-items (leaves or
+branches below that branch) which we call "members", another line, and
+a series of zero or more items (which usually at this level will be
+zero items for reasons which will soon become apparent) which we call
+"others".  This is called the navigation menu.
+ </para>
+</section>
+
+
+<section><title>Entering Data</title> <para> For a general database,
+one would probably want to be able to specify data according to "who,
+what, why, where, when, how much, and how many."  This would mean that
+most likely one would create the first level branches: "person, thing,
+reason, place, event, price, and quantity" or something to that
+effect.  Naturally, you could just do as mentioned above: start adding
+items right into the root then bust them up into categories that
+seemed to make sense when you got too many items in a single branch.
+That works well, however it has been my experience that it pays to
+start out with at least some very basic structure as I've just
+described.
+
+</para>
+
+<para>In order to create that structure, what you would do is right
+click on the "root"<footnote>the slash, or the couple of characters
+before it (which are there to make the field bigger so it is easier to
+click on) </footnote> and select the item "Add New Subbranch" from the
+"Branch Command Menu."  XEmacs would then prompt you in the mini-buffer
+for the name of the branch.  You would type it in: "person" for the
+first subbranch, hit enter, then repeat these steps for each
+additional subbranch you wanted to enter.  </para>
+
+<para>Say you wanted to create a new file and it was a memo to remind
+yourself that you had loaned "Joe Blow," your copy of the book
+"Information Anxiety."  If you had created the first level structure
+as I described, here's how you might go about adding that entry: You
+would right click on the root branch and select the first branch you
+wanted to create the leaf in, say "person."  The word "person/" would
+now appear right after the root.  If you position your mouse cursor on
+that word, you will see that it now highlights separately from the
+root.  Indeed, they are two distinct fields, or "widgets"
+displayed. You would middle click on the "person/" widget and get a
+"Branch Command Menu," and select "Create New Leaf" then type in the
+name of the leaf you want to create in the mini-buffer<footnote>It
+would not be a good idea for your to include slashes or double quotes
+in any branch or leaf names at this point because the results could be
+unpredictable.  Spaces, however, are OK except for in conjunction with
+certain applications such as some versions of TeX and LaTeX, who can't
+handle them yet.</footnote>.  In this instance, something like: "Blow,
+Joe."
+
+</para>
+
+<para> Next you would select the leaf by right clicking on the
+"person/" branch and selecting the name of that leaf <footnote>As of
+the current version, there is a bug which creates an error when you
+create a leaf then try to right click on the branch in which you
+created it.  If you get the error, just right click on the branch
+again and the error should be cleared the second and subsequent times.
+</footnote>.  This will put the name of that leaf on the screen.  Note
+that leaf names are not followed by a slash.  This is done so it will
+be easy for you to tell them apart (and it is the convention for Unix
+file-systems).
+
+</para>
+
+<section><title><application>N-Dex</application> internals</title>
+<para>A note is in order here to make things clearer as you read on.
+The way the Unix file-system has the ability for each file (leaf) to
+have different names that appear in multiple places, is that each file
+is given a serial number (called an "inode" number, which stands for
+"index node," in other words the slot number in a table kept in the
+file-system where the particulars for each file are recorded.  This
+table is, not surprisingly, called the "inode table").  When
+<application>N-Dex</application> starts up, it searches through the file-system and
+accumulates a pool of all of the file serial numbers in the whole
+file-system which it is assigned to use.  This "pool" of inode numbers
+is again created for each branch and leaf selected (and then
+displayed) on the screen and is actually stored in connection with the
+branch or leaf widget.  As one successively selects branches,
+subbranches, and then leaves, the pool connected to that branch/leaf
+naturally reduces in size (until when one gets to a leaf, the pool has
+only one member, that leaf's inode number).  It is by comparing the
+pool of the selected branch that <application>N-Dex</application> is able to determine
+which subbranches/leaves are "members" (to be found in the pool) and
+which are "others" (not found in the pool).  </para>
+
+<para>When a leaf has been selected, not only can the pool only
+possibly have one item from that point on, but the branch and leaf
+command menus change slightly.  From that point on, you will not be
+creating a new leaf, but instead adding a link to the leaf you just
+created (or selected,) for example.
+
+</para>
+</section>
+
+<para>Continuing with our example: once you had created the leaf
+"/person/Blow, Joe", you could actually place some notes about the
+transaction in the contents of the file, or the file could be a
+scanned image of the IOU from Joe Blow to you that he owed you one
+copy of the book "Information Anxiety."  It even could be a sound
+file which contained the conversation where he confirmed he had
+borrowing it.  If you wanted it to be the text file, you would right
+click on the leaf "Blow, Joe" and select "Blow, Joe" at the bottom of
+the menu that pops up.  This would bring up an empty XEmacs buffer for
+that file.  You could then make a few notes to yourself, save the
+file, and delete the buffer (which I'll refer you to the emacs
+tutorial on how to do).
+</para>
+
+<para>Next, you may want to add a link under most, if not all, of your
+other first level branches regarding the transaction.  To do that, you
+would right click on the "Blow, Joe" leaf, and select "New Angle."
+This will give you a vertical space in the buffer and another "root"
+branch (consisting of a couple of spaces and the "/" symbol a couple
+of lines further down the buffer).  Now if you right click on that new
+root, you will get the navigation menu, but the "person/" entry will
+be between the lines (in the "members" area) and all the other
+branches will be in the "others" area.  This is showing you that the
+"person/" branch contains a leaf that is a member of your current
+"pool" (which at this point only consists of the inode representing
+the single file/leaf "Blow, Joe").  You could then select, say
+"place/" from the navigation menu you just popped up and the second
+line would say "/place/" which would consist of two widgets
+(highlightable areas), "  /" juxtapositioned next to "place/."  Now,
+the place you could put is the place where you loaned the book, or the
+place where Joe Blow lived, or the place where he was going to return
+it to you, etc... or any combination of the above.  Let's say you
+loaned the book to him at "Hal's coffee shop," and Joe Blow lives at
+"123 Any street."  To create those links, we would middle click the
+"place/" widget and select "Add a Link."  Then we would put "Hal's
+coffee shop" into the mini-buffer and hit enter.  Next you would middle
+click on "place/" again, select "Add a Link," then type "123
+Any street" and hit enter.  Now if you right click on "place/" you will
+see those two leaves in there under the "members" area.
+</para>
+
+<para>You need not have too much anxiety about adding the place where
+Joe Blow said he would return the book to you because if you wanted to
+add that link later, you could simply select the leaf (either from
+"person/" or from "place/") and "Add a Link" at that time.  This is an
+important concept, because one can really go crazy with all the power
+<application>N-Dex</application> gives you with different combinations of ways to look
+things up.  Perhaps the best policy is to pick the three or four best
+ways to find your information, create links for those, and forget the
+rest for now; especially if you have a lot of information you want to
+enter.  You don't want to get bogged down.  You can always add new
+links to your information later if you discover you have difficulty
+finding it, plus you still have the full power of the Unix file-system,
+shell scripts, and various file manager tools to locate the files.
+See especially the "file," "rgrep," and the "find" shell commands,
+where you can search for the content of files, the creation, last
+modification/read dates, file ownership/group, number of links, and so
+forth.
+</para>
+
+<para>Now you could right click on the "place/" widget and select one
+of the links you just created, then right click on that and select it
+from the bottom of the menu.  This will bring the file up in an
+editing buffer and you can verify that it is the same file and the
+memo you typed to yourself is still there.  You could change it at
+this point, save the file, delete the buffer, and go back up to the
+"Blow, Joe" link, edit that (with a right click and selecting that
+name from the bottom of the menu), and confirm that the changes did
+actually get reflected in the file under it's original
+name<footnote>If this does not happen, your version of XEmacs is
+making a backup by copying the file before editing it.  You need to
+change that behavior to edit before making the backup copy in your
+options.  See the troubleshooting section </footnote>.
+
+</para>
+
+<para>When you are all done linking this item into all the places you
+would like, under all the names you would like, then you can select
+any displayed leaf, middle click, and select the item "Show All
+Angles" from the "Leaf Command Menu."  This might take a few minutes,
+but it will rebuild your display to show all the links for this
+particular leaf as successive angles (which you can manipulate just as
+if you had gone through and selected each branch and leaf by hand).
+
+</para>
+
+<para>Now go ahead and add 1/2 dozen more pieces of information,
+preferably not about the same places, things, or people (such that
+you don't end up with a "name collision" between the leaves that
+already exist).  This will give you a minimal working dataset so you
+can go on to start filling out your tree and learning about all the
+features <application>N-Dex</application> has for manipulating it.  To do this you must
+right click on the first root widget (the "  /" highlightable field
+just below the buttons at the top of the <application>N-Dex</application> buffer) and
+select the first branch you want to enter the new data into.  Now your
+pool has been reset to include all the inodes (actual files/leaves) in
+the system and since you have not selected a leaf, when you pop up the
+branch command menu, one of its entries is "Create a New Leaf" rather
+than "Add a Link" as it was before.  Now just go back to the
+instructions that you just used to create entry for Joe Blow borrowing
+your book (except use different file/leaf names so you don't get an error).
+</para>
+
+</section>
+
+</chapter>
+
+<chapter><title>Finding Information</title>
+
+<para>Now, that you have a reasonable dataset, you can commence with a
+search.  Since I don't know what other data you entered into the tree
+at the end of the last chapter, let's just start by searching for the
+"Joe Blow" entry.  Start by right clicking on the root widget and
+select "person/" from the menu.  The "person/" widget/field will
+appear just after the initial root widget/field.  Next right click on
+the person/ widget/field and select "Blow, Joe."  Now right click on
+the "Blow, Joe" leaf widget that comes up and select "New Angle".  A
+couple of lines below, you will get a new root widget.  Right click on
+that and you will see all the subbranches that also contain data for
+Joe Blow.  Right click on "place/."  Now if you right click on the
+"place/" widget, you will see the "123 Any-street" and "Hal's coffee
+shop" widget's in the member's area.  If you go back and right click
+on the root widget of that second "angle," and select "thing/," for
+instance, then right click on the "thing/" widget that comes up, you
+will see all the leaves under that subbranch that are also members (in
+this case, the same identical file/leaf, because your pool has been
+reduced to one.  Later you will see how handy this can be to
+incrementally reduce your searches when you have a multitude of items
+in the pool).
+</para>
+
+<para>In this particular instance, it is not much of a search because
+your primary branches are so general in nature.  You could get a
+useful search, for instance, if there was only one intersection
+between say "person" and "thing", in other words if you had only tied
+one thing to a person.  Then you would just select "person/", "New
+Angle," and then "thing/" and you would instantly see what "thing(s)"
+had a connection to a "person," (in this case, probably a "Information
+Anxiety book").
+</para>
+
+<para>Another interesting behavior to note, is that you can select
+"other branches" (i.e. branches that are below the bottom line), you
+cannot select "other leaves."  This is done because you may want to
+add branches and leaves in areas where no members of the current pool
+of inodes currently exists.  It would make no sense<footnote>at least
+as far as I have been able to determine to date</footnote> for you to
+be able to first reduce the pool, then "switch horses" midstream and
+start adding to, or changing it entirely by selecting an "other" leaf.
+If you want to select that leaf, you are going to either have to start
+back at the first angle's root, or at least back to the point where
+that leaf is still a member of the pool (which is probably going to be
+pretty near the beginning, since with every "New Angle," the only items
+still in the pool are those inodes/leaves to be found under that
+subbranch, which were still in the pool at the point where you did the
+"New Angle").  In fact, when you pop up a navigation menu in a
+subbranch that has "other leaves," those leaves should be in a light
+gray font in the menu to signify that they are
+"non-selectable"<footnote>currently not working due to
+bugs/enhancements in the widget library; see the "Wish-list"
+appendix</footnote>.
+</para>
+
+<para>Finally, as a more advanced and refined search, you can select
+any branch with a middle click, and "Reassert This Branch" which
+reasserts that search as a new angle at the bottom of the stack.  This
+allows you to do something like (hypothetically) "/person/borrower/New
+Angle," "/place/Hal's coffee shop/," reassert "/person/borrower/" then
+select "Blow, Joe/" once you know Joe Blow was one of the people that
+borrowed something from you at Hal's coffee shop
+<footnote>this feature currently not implemented.  This is a more
+advanced example, that assumes that you had demoted "Blow, Joe" and
+"Hal's coffee shop" into their own branches, and a multitude of events
+had occurred that involved Joe Blow, other people, Hal's, and other
+places.  You will understand this better when you learn more
+about modifying the tree below.
+</footnote>
+</para>
+</chapter>
+
+<chapter><title>Modifying the Tree</title>
+
+<para>There are many facets of modifying the <application>N-Dex</application> tree.  You
+can promote or demote a node (which means to create a leaf with
+ the same name as the current branch, then move that leaf into the
+ newly created branch, or move the current sole leaf in a branch to
+ it's parent branch at the same time deleting the the branch where the
+ sole leaf currently exists). You can create, delete, and rename
+ branches.  You can create, unlink, completely purge, and/or
+ move/rename leaves or links.
+ You can select a branch then copy,
+ link, or
+ move another branch's contents into that selected branch.  Then you
+ can select a leaf and take another leaf and link it into all the
+ places where that leaf currently exists.  In the following sections
+ we will discuss each of these features in turn: </para>
+
+<section><title>Demoting and Promoting Leaves</title>
+
+<para>
+In the "Joe Blow" example in the previous chapter, you probably
+discovered, or could reasonably foresee that you would quickly run into
+trouble if any more than one event occurred wherein either Joe Blow,
+Hal's coffee shop, or the book "Information Anxiety" was involved.
+That is because, it could be said, that a link or leaf is "atomic."
+What you will quickly discover you need to do is store more than one
+thing for Joe Blow, or Hal's coffee shop.  In that case, you need to
+turn those leaves into branches, and put the leaves (with more
+specific detail conveyed in their names) below those newly created
+branches.  This is done with the "Demote Leaf" selection off the "Leaf
+Command Menu" (e.g. what happens when you middle click on a leaf).
+Here's how it's done:
+</para>
+
+<para>
+At some point in the angles (it really matters not where) select
+"Blow, Joe" and middle click on its widget when it comes up in the
+buffer.  Select "Demote node" from the "Leaf Command Menu."  You will
+be prompted for "Enter new link name:" in the mini buffer.   The name
+"Blow, Joe" will be entered there for you by default.  If you wish to
+make that the name of the new link under the "Blow, Joe/" branch you
+are about to create by the "Demote node" operation, then you can just
+leave it alone and hit enter.  If you want to create the node under a
+different name, then you can change it.  This would probably be a good
+idea because the angle: "  /person/Blow, Joe/Blow, Joe" doesn't really
+convey as much information as it could, and in fact looks like
+something concocted by the "Department of Redundancy Department."  In
+the current instance, you could change it to "Has Book: Information
+Anxiety," for example, that way you might save yourself some time
+having to flip on over to "/thing/book/New Angle", "/person/" to see
+who has your books.
+
+<para> Promotion of a node is almost exactly the
+opposite<footnote>Currently not implemented</footnote>.  The option
+will show up on the "Leaf Command Menu" when it is the sole item left
+in a branch.  When it is, you middle click on the leaf, select
+"Promote Node".  You will be prompted (with a default of the leaf's
+current name) for a name to give the leaf when it is moved into it's
+parent branch, the branch it currently exists in will be  eradicated and
+the leaf is moved into it's parent branch (with the given name).
+</para>
+
+<para>These commands are really just shortcuts for a combination of
+creation, deletion, moving, and renaming of leaves and branches
+operations described below.  They are so handy when initially filling
+in the tree, that I thought I'd describe them first so you can get a
+better feel for how <application>N-Dex</application> (and your
+own brain) wants to store information.  With just these commands, and
+the basic search and leaf creation commands described above, you can
+milk significant power out of <application>N-Dex</application>.
+Give it a try!  </para>
+
+</section>
+
+<section><title></title>
+</section>
+</chapter>
+
+<chapter><title>The future</title>
+
+<para>
+What does the future look like for
+<application>N-Dex</application>?  Well, I would hope that
+N-Dex would first be used to create a shared database that would
+encompass everything related to Emacs LISP.  It would be nice if this
+could be put on the web through W3, it's (currently moribund) LISP
+scripting, and then eventually, one of the LISP interfaces to the Java
+Virtual Machine.  Next I would hope that this database would begin to
+encompass Unix and Unix like systems (i.e. Linux).  As I am into law and it's
+future with mark-up languages, I would hope it would begin to
+encompass that.  Additionally, I intend to push it into the arena of
+wholistic health, alternative energy, management technology,
+alternative dispute resolution, "self help"/commercial law, and
+American legal/political history.  From there the sky is the limit.  I
+envision the possibility of N-Dex eventually (with significant
+wrenching up of its internals) becoming a link farm and file
+repository that might rival some of the more popular search engines.
+I could see artificial intelligence tree balancing daemons taking over
+for rooms full of clerks/operators in that function.
+</para>
+
+<para>
+The concept of N-Dex as the fundamental human/machine/web interface
+is taking shape in the form of business plans, algorithms, custom
+hardware/IC designs, and so forth.  Investors, contributors, and interested
+parties are invited to communicate with ESE staff regarding what role
+you think you might play in this exciting revolution!
+</para>
+
+<appendix>
+<title>What is Eco-Symmetric Enterprises?
+</title>
+
+<para>Eco-Symmetric Enterprises ("ESE") is the business trust vehicle
+that was initially created during my forayer into things other than
+computers back in the 1980's.  Our mission was to incubate and
+coordinate innovation in the area of alternative energy generally, and
+biomass farm energy in particular.  One of our first, and most
+significant projects was to marry the technologies created by the
+life's work of several inventors into a full spectrum solution to
+orchard slash and chaparal brush harvesting for powerplant boiler
+fuel.
+
+</para>
+
+<para> We attempted to provide cutting edge technology, management,
+finance, negotiation, and coordination as a service to our spin-offs.
+We foresaw the California electric energy crisis (as a contrived
+emergency created by the utilities to drain the budget and rob the
+taxpayers) far in advance.  Perhaps it was a little too far in advance
+because the money that would have easily funded our solutions to the
+farm, air pollution, and biomass energy problems, was, on several
+occasions, levied as fines against the actors in this area who had
+turned us down, and who would have benefited most by our technolgy
+(including avoiding said fines).  It was discouraging that people
+could be so short sighted.  Some players in our organization dropped
+out.  Other's joined.  Now our focus, although still on cutting edge
+technology, management, negotiation, financing, and incubation, is
+directed mostly at promotion of homeostatic
+solutions<footnote>Homeostasis refers to the ability of all the
+constituent parts of a organism or organization to operate efficiently
+in conjunction with each other.  See generally information on
+"Maslow's Hierarchy of Needs" for a further description.</footnote>.
+One must first have efficient, truthful, and fair interactions between
+the cells of one's body, then between oneself and the members of one's
+family, then oneself and one's friends/associates (i.e. one's
+company/corporation), then between oneself and one's community,
+between oneself and one's nation, then between oneself and the rest of
+humanity (then between one's company/corporation and all those
+entities).  Included in this mission is not only in setting an
+example, but also the promotion of quality information about physicalecho -n \\\";echo -n \"%s\"|sort|grep -v '^$'|uniq; echo \\\""
+health, effective management and compensation systems, the truth about
+law, win/win negotiation techniques, full disclosure economics,
+politics, energy, communications (media), and so forth.
+
+</para>
+
+<para>One of ESE's primary goals is that the private individual be
+empowered above the corporation (and the government) at almost every
+turn because the current rules and policies of the various governments
+strongly favor corporations.  <application>N-Dex</application>,
+being free for private use is hoped to be one small leveling factor
+toward this end.  It is hoped that this will empower individuals to
+gather and organize information about evil doing corporations,
+governments and their actors such that these entities/acts can be
+mitigated, and also to empower individuals to compete effectively with
+them in a "David verses Goliath" fashion.  </para>
+
+<para> The commercial user (and any private donor) has our pledge that
+revenues received will be used toward the end of a better prioritized,
+more sane, just, and synergistic society.  We have modest needs,
+minimal appetites, and are throughly committed to this goal so are
+committed to remain "lean and mean" until objectivity, sanity,
+honesty, integrity, and efficiency is clearly the self--sustaining
+rule of our society and not the exception.
+
+</para>
+
+
+</appendix>
+
+<glossary>
+<title>
+Glossary
+</title>
+<glossdiv><title>A</title>
+<glossentry id="angle">
+<para>A path of nodes that can together as one of several search
+restrictions.  A line on <application>N-Dex</application>'s screen used to locate or edit
+branches and leaves.
+</para>
+</glossdiv>
+<glossdiv><title>B</title>
+<glossentry id="branch">
+<para>A corollary to a file-system directory.  Can also be used to
+describe the displayed widget in the buffer that represents the
+file-system directory.</para>
+</glossdiv>
+<glossdiv><title>C</title>
+</glossdiv>
+<glossdiv><title>D</title>
+</glossdiv>
+<glossdiv><title>E</title>
+</glossdiv>
+<glossdiv><title>F</title>
+<glossentry id="FORTH">
+<para>A stack based, extensible language which appears to have evolved somewhat
+naturally out of macro assembler.  It was invented by Charles Moore in
+the late 1960's and used extensively in scientific, real time process
+control, and embedded applications.  Several of FORTH's more
+interesting attributes were that it was not uncommon for the FORTH
+interpreter/compiler to be ported directly to a system without any
+intervening software (operating system), that it was small, fast,
+allowed one to write extremely tight code, and followed by a small
+band of extremely loyal adherents (who largely are unchanged to this day).
+</glossdiv>
+<glossdiv><title>G</title>
+</glossdiv>
+<glossdiv><title>H</title>
+</glossdiv>
+<glossdiv><title>I</title>
+</glossdiv>
+<glossdiv><title>J</title>
+</glossdiv>
+<glossdiv><title>K</title>
+</glossdiv>
+<glossdiv><title>L</title>
+<glossentry id="leaf">
+<para>A corollary to a file-system file.  Can also be used to describe
+the displayed widget on the screen that represents the file-system file.</para>
+</glossentry>
+</glossdiv>
+<glossdiv><title>M</title>
+</glossdiv>
+<glossdiv><title>N</title>
+</glossdiv>
+<glossdiv><title>O</title>
+<glossentry id="OASIS">
+<para>An operating system mostly for Zilog Z-80 based machines during
+the late 1970's through the early 1990s (although it was ported to the
+early IBM PC's but never was as successful as DOS).  It's main
+competition was CP/M however OASIS provided many more features such as
+multiusering, multitasking, advanced business BASIC, macro assembler,
+file/record locking, system level database binary search, hash search,
+etc...  
+</glossdiv>
+<glossdiv><title>P</title>
+</glossdiv>
+<glossdiv><title>Q</title>
+</glossdiv>
+<glossdiv><title>R</title>
+</glossdiv>
+<glossdiv><title>S</title>
+</glossdiv>
+<glossdiv><title>T</title>
+</glossdiv>
+<glossdiv><title>U</title>
+</glossdiv>
+<glossdiv><title>V</title>
+</glossdiv>
+<glossdiv><title>W</title>
+</glossdiv>
+<glossdiv><title>X</title>
+</glossdiv>
+<glossdiv><title>Y</title>
+</glossdiv>
+<glossdiv><title>Z</title>
+</glossdiv>
+</glossary>
+</book>
+
