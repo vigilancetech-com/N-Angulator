@@ -1,7 +1,7 @@
-;;; nang.el -- Nang: Persistent N-Dimensional Sparse Array, Editor, and Browser
+;;; na.el -- Nangulator: Persistent N-Dimensional Sparse Array, Editor, and Browser
 
 ;; Copyright (C) 2001, 2002, 2003
-;;       Nang.com -- All Rights Reserved
+;;       TurbInfo.com -- All Rights Reserved
 
 ;; Author: Kevin Haddock <kevinhaddock@yahoo.com>
 ;; Maintainer: Kevin Haddock <kevinhaddock@yahoo.com>
@@ -11,21 +11,21 @@
 
 ;; This program runs under XEmacs
 
-;; Nang is free software; you can redistribute it and/or modify
-;; it under the terms of the Nang.com Public
-;; License as published by Nang.com
+;; Nangulator is free software; you can redistribute it and/or modify
+;; it under the terms of the TurbInfo.com Public
+;; License as published by TurbInfo.com
 ;; either version 1, or (at your option)
 ;; any later version.
 
-;; Nang is distributed in the hope that it will be useful,
+;; Nangulator is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; Nang.com Public License for more details.
+;; TurbInfo.com Public License for more details.
 
-;; You should have received a copy of the Nang.com
-;; Public License  along with Nang; see the file COPYING.
+;; You should have received a copy of the TurbInfo.com
+;; Public License  along with Nangulator; see the file COPYING.
 ;; If not, write to:
-;; Nang.com
+;; TurbInfo.com
 ;; Attn: Kevin Haddock
 ;; 975 East Ave. PMB 112
 ;; Chico, CA 95926, USA.
@@ -37,37 +37,37 @@
 ;; This utility can optionally work in conjunction with an
 ;; automated document generation system (mrg.el) by the same author.
 
-;; Nang makes use of Unix-like file systems that allow hard links to files
+;; Nangulator makes use of Unix-like file systems that allow hard links to files
 ;; (the same file showing up in different places in the file-system hierarchy under
 ;; possibly different names).  It turns this feature into an automated, multi-indexed,
 ;; multimedia file cabinet where items and groups of items can be incrementally searched
-;; by doing a series of union and intersection 'set' operations.  In Nang speak, files
+;; by doing a series of union and intersection 'set' operations.  In Nangulator speak, files
 ;; are called 'leaves,' directories are called 'branches,' and the incremental searches called
-;; 'angles.'  It is called 'Nang' because locating the desired information resembles
+;; 'angles.'  It is called 'Nangulator' because locating the desired information resembles
 ;; the process of 'triangulating' the source of a radio signal except that N different 'angles'
 ;; may be (and usually are) employed rather than just two.
 
-;; Nang also allows one to easily add, delete, and modify the elements in the tree, hence
+;; Nangulator also allows one to easily add, delete, and modify the elements in the tree, hence
 ;; it's role as file tool, or 'editor.'  It is 'persistent' because very rapidly (usually no
 ;; more than 30 seconds, depending on the operating system's cache) all changes are committed
 ;; to disk and more or less permanent.  It is somewhat object oriented because it uses the mime
 ;; library to deal with each file type independently.
 
-;; Nang's possible (future) uses could be:  Internet bookmark file, search engine, link farm,
+;; Nangangulator's possible (future) uses could be:  Internet bookmark file, search engine, link farm,
 ;; sales contact management, multi-media archive, etc... or literally any extensive multi-indexed filing
 ;; application.
 
-;; NOTE: Nang is not GPL and is not for commercial (for profit) use without prior written
+;; NOTE: Nangulator is not GPL and is not for commercial (for profit) use without prior written
 ;; approval/license from the author and/or owner.  It is free for your private use and we look forward
 ;; to discussing enterprise partnerships for commercial applications.  
 
-;; NOTE TO DEVELOPERS: Since Nang is not truly copylefted, if you contribute to its development
+;; NOTE TO DEVELOPERS: Since Nangulator is not truly copylefted, if you contribute to its development
 ;; (especially on the conceptual level) we promise to cut you in on any commercial royalties to an
 ;; objectively proportionate amount (as to be determined by a mutually agreeable third party if necessary).
-;; We believe Nang to be the genesis of a revolutionary new paradigm of human/machine interaction
+;; We believe Nangulator to be the genesis of a revolutionary new paradigm of human/machine interaction
 ;; and any workman (or woman) contributing effectively to this revolution is worthy of their hire.
 
-;; CAVEAT TO THIEVES: Nang.com' ordinary business is private banking, commercial law,
+;; CAVEAT TO THIEVES: TurbInfo.com's ordinary business is private banking, commercial law,
 ;; and legal procedure.  If you use this software (or this concept) for profit without our license you will
 ;; soon find that you chose the most expensive route by far.  We have zero tolerance for those with the
 ;; N.I.H. (Not Invented Here) mentality (i.e. those who would rather steal that which they could not
@@ -102,6 +102,7 @@
 ;;   Considering keeping directory inodes to improve screen updates
 ;;   Make leaf and branch modifications more object oriented
 ;;   Make Nang look and behave somewhat like Nautilus (or integrate Nang search features there)
+;;   link to selection to already existing link pops bogus error
 ;;
 ;;; Code:
 
@@ -603,6 +604,11 @@ value if this widget did not override the parent"
 			    "\"")))
 	   (na-refresh-screen widget))))
 
+; the destination menu/pool does not get updated here
+; probably because the destination is not the current
+; widget, so it somehow needs to get set to that
+; then the 'current' widget updated
+; should be the same for all these 'select' functions
 (defun na-link-select ()
   "Link the selected leaf to the selection"
   (let* ((name (widget-get widget :tag))
@@ -614,9 +620,12 @@ value if this widget did not override the parent"
 	   (na-error
 		 (na-shell-string-read
 		  (concat "ln \""  name "\" \""
-			  na-base-directory branchname "\" \""
-			  newname "\"")))
-	   (na-update-all-named branchnode))))
+			  (concat na-base-directory branchname
+			  newname "\""))))
+	   (na-pool-add branchnode)
+	   (na-rebuild-brmenus)
+	   (na-update-all-named branchnode)
+	   (na-update-all-named branchname))))
   
 (defun na-copy-select ()
   "Copy the selected leaf to the selection"
@@ -632,7 +641,9 @@ value if this widget did not override the parent"
 		  (concat "cp \""  name "\" \""
 			  na-base-directory branchname
 			  newname "\"")))
-	       (na-update-all-named  branchnode))))
+	   (na-pool-add branchnode)
+	   (na-rebuild-brmenus)
+	   (na-update-all-named  branchnode))))
   
 (defun na-move-select ()
   "move the selected leaf to the selection"
@@ -647,7 +658,9 @@ value if this widget did not override the parent"
 		  (concat "mv \""  name "\" \""
 			  na-base-directory branchname
 			  newname "\"")))
-	       (na-update-all-named  branchnode))))
+	   (na-pool-add branchnode)
+	   (na-rebuild-brmenus)
+	   (na-update-all-named  branchnode))))
   
 
 (defun na-purge-leaf ()

@@ -11,7 +11,7 @@ eps screenshots.
 
 <book>
   <bookinfo>
-    <title><application>N-Dex</application> Users Manual</title>
+    <title><application>N-Angulator</application> Users Manual</title>
 
     <author><firstname>Kevin</firstname><surname>Haddock</surname></author>
 
@@ -31,11 +31,11 @@ eps screenshots.
 
 <phrase>
 
-<application>N-Dex</application> main page</phrase>
+<application>N-Angulator</application> main page</phrase>
 
 </textobject>
 <caption>
-<para>Here is the <application>N-Dex</application> main start up
+<para>Here is the <application>N-Angulator</application> main start up
 screen.  </para>
 
 </caption>
@@ -44,13 +44,13 @@ screen.  </para>
 
 <para>
 
-<application>N-Dex</application> is free software for
+<application>N-Angulator</application> is free software for
 non-commercial use; you can redistribute it and/or modify it under the
 terms of the Eco-Symmetric Enterprises Public License as published by
 Eco-Symmetric Enterprises either version 1, or (at your option) any
 later version.  </para>
 
-<para> <application>N-Dex</application> is distributed in the
+<para> <application>N-Angulator</application> is distributed in the
 hope that it will be useful, but WITHOUT ANY WARRANTY; without even
 the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 PURPOSE.  See the Eco-Symmetric Enterprises Public License for more
@@ -58,7 +58,7 @@ details.  </para>
 
 <para> You should have received a copy of the Eco-Symmetric
 Enterprises Public License along with
-<application>N-Dex</application>; see the file COPYING.  If not,
+<application>N-Angulator</application>; see the file COPYING.  If not,
 write to: </para>
 
 <para>
@@ -176,14 +176,14 @@ the hands of another enthusiast.  Generally this has been true.
 <para> Around 2000, I decided I might like to take a crack at putting
 a flexible user interface on the Unix file-system.  Actually, first,
 like a fool, I tried (and mostly was successful) at developing a
-resident version of <application>N-Dex</application> that would
+resident version of <application>N-Angulator</application> that would
 also run under Windows, but most of the way into that I decided that
 it was just too crippled, and I ultimately didn't care if the that
 community had access to this technology.  If they wanted it bad
 enough, someone over there would implement the Unix file-system as I
 sure wasn't going to do it.  I figured Windows was a dead end system
 just like DOS and OASIS had been (and hopefully I could play my part
-in accelerating its ultimate demise with <application> N-Dex
+in accelerating its ultimate demise with <application> N-Angulator
 </application>!).  </para>
 
 <para> In dealing with legal matters, along with all my various other
@@ -218,7 +218,7 @@ further sub-subcategories for the same reason.
 
 <para> This also kind of goes along with the concepts in the book
 "Information Anxiety" (which I would highly recommend anyone using
-<application> N-Dex </application> should read).  Basically the
+<application> N-Angulator </application> should read).  Basically the
 author says that information can be organized in only a couple of
 ways: by Category, Alphabetical or Continuum.  In other words, if your
 data does not naturally fall into a continuum, such as by date,
@@ -245,7 +245,7 @@ it cannot hurt to establish some minimal skeletal structure, but be
 warned, it is easy to go overboard and make a lot of extra work for
 yourself!  </para>
 
-<para> What <application>N-Dex</application> does is allow one
+<para> What <application>N-Angulator</application> does is allow one
 to keep multiple indexes and to quickly locate any item based upon the
 intersection of any combination of parts of said indexes.  The process
 is akin to triangulation, whereby a point source of a radio signal,
@@ -256,9 +256,9 @@ comparing the compass angle of two different directional receivers,
 though, and doing some trigonometry, an exact location can be
 determined.  </para>
 
-<para> <application> N-Dex </application>, unlike a
+<para> <application> N-Angulator </application>, unlike a
 triangulation, is not limited to only a couple of "angles," and a
-physical landscape.  Indeed, <application> N-Dex </application>
+physical landscape.  Indeed, <application> N-Angulator </application>
 locates points of information in a mental landscape, taken from as
 many "angles" as the human mind is able to conceive <footnote> Subject
 to the limitations of the underlying file and operating system, which
@@ -271,7 +271,7 @@ phrases). </para>
 editor is that there are already many people familiar with them and
 much of the documentation to understand them throughly is already done
 and widely available.  This includes many good tutorials.
-<application> N-Dex </application> is merely the glue that welds
+<application> N-Angulator </application> is merely the glue that welds
 the parts into a sum that is hopefully the greater.  If one is
 unfamiliar with XEmacs and the Unix file-system, I would suggest you
 skim this manual, go study the those systems in detail (especially from
@@ -284,7 +284,7 @@ resources where XEmacs and the Unix file-system can be researched.
 efficient and effective file clerk.  He was so good at telling the
 various presidential administrations who so and so's cousin-in-laws
 were related to in such and such department that it actually got to be
-a political problem.  The promise of <application> N-Dex
+a political problem.  The promise of <application> N-Angulator
 </application> is that we all could become as efficient at sorting,
 storing, mining, and relating information that the average Joe could
 have as big of an impact upon our society, but for liberty and
@@ -298,7 +298,7 @@ country already have info-weapons such as this.  I love the sayings:
 "God made man, but Smith and Wesson made 'um equal!" and "What the
 world needs is a good five dollar phasor weapon!"  Knowlege is power,
 and information is the new currency.  It is prayed that
-<application> N-Dex </application> will level the playing field a
+<application> N-Angulator </application> will level the playing field a
 bit.  I do not fear the average reasonable man having greatly enhanced
 abilities to manage information any more than I fear him having a
 machine gun, bazooka, or tank, because, ultimately, he will most
@@ -328,12 +328,12 @@ can't pay the relationship the attention it justly deserves.
 </para>
 </ackno>
 
-<chapter><title>Copying <application>N-Dex</application></title>
+<chapter><title>Copying <application>N-Angulator</application></title>
 
 
 </chapter>
 
-<chapter><title>Overview of <application>N-Dex</application></title>
+<chapter><title>Overview of <application>N-Angulator</application></title>
 
 <para>
 The human mind thrives on the relationships between things.  We are
@@ -381,12 +381,12 @@ understanding and interaction.  Why do we still mostly use the piston engine
 when there are so many far superior alternatives?   Tradition?  Vested
 interest?  Familiarity?  Infrastructure?  It doesn't really matter.
 What matters now, is that we have an alternative to the flat tree
-structure with <application>N-Dex</application>.
+structure with <application>N-Angulator</application>.
 
 </para>
 
-<section><title>History of <application>N-Dex</application></title>
-<para>When one boots up <application>N-Dex</application>, he sees the description
+<section><title>History of <application>N-Angulator</application></title>
+<para>When one boots up <application>N-Angulator</application>, he sees the description
 "Persistent N-Dimensional Sparse Array, Editor, and Browser."  A
 little explanation of this phrase is in order.  When I was a young
 programmer (in the early '80s), I consulted for a health food and
@@ -450,13 +450,13 @@ late 90's it all came together.  </para>
 </section>
 
 <section><title>Basic Interaction</title>
-<para>In order to effectively operate <application>N-Dex</application>, one should have,
+<para>In order to effectively operate <application>N-Angulator</application>, one should have,
 not only a basic understanding of the Unix file-system, but of the
 operation of XEmacs.  As is typical for XEmacs, the left mouse button
 moves the cursor, such as to an input field, or the mini-buffer.  The
 middle mouse button is used for selecting items from a list (or paste
 the selected text, if relevant), and the right mouse button is used to
-pop up menus.  When one starts <application>N-Dex</application>, one sees several buttons
+pop up menus.  When one starts <application>N-Angulator</application>, one sees several buttons
 at the top, and a single solitary slash at about the middle of the
 buffer (which will be the last character in the buffer).  If you
 position your mouse cursor over that slash, or the couple of spaces to
@@ -468,7 +468,7 @@ faces are configured), you will see it change color<footnote>
  light green. </footnote>.  </para>
 
 <para>
-This changing of color is one way you can tell that <application>N-Dex</application> is
+This changing of color is one way you can tell that <application>N-Angulator</application> is
 alive and well and listening to you.  If it does not change color, or
 the slash does not appear, something is wrong, and you should refer to
 the appendix on troubleshooting.
@@ -491,7 +491,7 @@ get a pop-up menu called the "Branch Command Menu."  If you hit the
 right mouse button, you will get a menu with the name of that branch
 consisting of the first item labeled as "New Angle," a
 line<footnote>right now consisting of an underscored dash and several
-more dashes due to a bug in the widgets package upon which <application>N-Dex</application>
+more dashes due to a bug in the widgets package upon which <application>N-Angulator</application>
 relies</footnote>, a series of zero or more sub-items (leaves or
 branches below that branch) which we call "members", another line, and
 a series of zero or more items (which usually at this level will be
@@ -558,7 +558,7 @@ file-systems).
 
 </para>
 
-<section><title><application>N-Dex</application> internals</title>
+<section><title><application>N-Angulator</application> internals</title>
 <para>A note is in order here to make things clearer as you read on.
 The way the Unix file-system has the ability for each file (leaf) to
 have different names that appear in multiple places, is that each file
@@ -566,7 +566,7 @@ is given a serial number (called an "inode" number, which stands for
 "index node," in other words the slot number in a table kept in the
 file-system where the particulars for each file are recorded.  This
 table is, not surprisingly, called the "inode table").  When
-<application>N-Dex</application> starts up, it searches through the file-system and
+<application>N-Angulator</application> starts up, it searches through the file-system and
 accumulates a pool of all of the file serial numbers in the whole
 file-system which it is assigned to use.  This "pool" of inode numbers
 is again created for each branch and leaf selected (and then
@@ -575,7 +575,7 @@ branch or leaf widget.  As one successively selects branches,
 subbranches, and then leaves, the pool connected to that branch/leaf
 naturally reduces in size (until when one gets to a leaf, the pool has
 only one member, that leaf's inode number).  It is by comparing the
-pool of the selected branch that <application>N-Dex</application> is able to determine
+pool of the selected branch that <application>N-Angulator</application> is able to determine
 which subbranches/leaves are "members" (to be found in the pool) and
 which are "others" (not found in the pool).  </para>
 
@@ -634,7 +634,7 @@ Joe Blow said he would return the book to you because if you wanted to
 add that link later, you could simply select the leaf (either from
 "person/" or from "place/") and "Add a Link" at that time.  This is an
 important concept, because one can really go crazy with all the power
-<application>N-Dex</application> gives you with different combinations of ways to look
+<application>N-Angulator</application> gives you with different combinations of ways to look
 things up.  Perhaps the best policy is to pick the three or four best
 ways to find your information, create links for those, and forget the
 rest for now; especially if you have a lot of information you want to
@@ -679,9 +679,9 @@ preferably not about the same places, things, or people (such that
 you don't end up with a "name collision" between the leaves that
 already exist).  This will give you a minimal working dataset so you
 can go on to start filling out your tree and learning about all the
-features <application>N-Dex</application> has for manipulating it.  To do this you must
+features <application>N-Angulator</application> has for manipulating it.  To do this you must
 right click on the first root widget (the "  /" highlightable field
-just below the buttons at the top of the <application>N-Dex</application> buffer) and
+just below the buttons at the top of the <application>N-Angulator</application> buffer) and
 select the first branch you want to enter the new data into.  Now your
 pool has been reset to include all the inodes (actual files/leaves) in
 the system and since you have not selected a leaf, when you pop up the
@@ -770,7 +770,7 @@ about modifying the tree below.
 
 <chapter><title>Modifying the Tree</title>
 
-<para>There are many facets of modifying the <application>N-Dex</application> tree.  You
+<para>There are many facets of modifying the <application>N-Angulator</application> tree.  You
 can promote or demote a node (which means to create a leaf with
  the same name as the current branch, then move that leaf into the
  newly created branch, or move the current sole leaf in a branch to
@@ -834,10 +834,10 @@ the leaf is moved into it's parent branch (with the given name).
 creation, deletion, moving, and renaming of leaves and branches
 operations described below.  They are so handy when initially filling
 in the tree, that I thought I'd describe them first so you can get a
-better feel for how <application>N-Dex</application> (and your
+better feel for how <application>N-Angulator</application> (and your
 own brain) wants to store information.  With just these commands, and
 the basic search and leaf creation commands described above, you can
-milk significant power out of <application>N-Dex</application>.
+milk significant power out of <application>N-Angulator</application>.
 Give it a try!  </para>
 
 </section>
@@ -850,8 +850,8 @@ Give it a try!  </para>
 
 <para>
 What does the future look like for
-<application>N-Dex</application>?  Well, I would hope that
-N-Dex would first be used to create a shared database that would
+<application>N-Angulator</application>?  Well, I would hope that
+N-Angulator would first be used to create a shared database that would
 encompass everything related to Emacs LISP.  It would be nice if this
 could be put on the web through W3, it's (currently moribund) LISP
 scripting, and then eventually, one of the LISP interfaces to the Java
@@ -862,7 +862,7 @@ encompass that.  Additionally, I intend to push it into the arena of
 wholistic health, alternative energy, management technology,
 alternative dispute resolution, "self help"/commercial law, and
 American legal/political history.  From there the sky is the limit.  I
-envision the possibility of N-Dex eventually (with significant
+envision the possibility of N-Angulator eventually (with significant
 wrenching up of its internals) becoming a link farm and file
 repository that might rival some of the more popular search engines.
 I could see artificial intelligence tree balancing daemons taking over
@@ -870,7 +870,7 @@ for rooms full of clerks/operators in that function.
 </para>
 
 <para>
-The concept of N-Dex as the fundamental human/machine/web interface
+The concept of N-Angulator as the fundamental human/machine/web interface
 is taking shape in the form of business plans, algorithms, custom
 hardware/IC designs, and so forth.  Investors, contributors, and interested
 parties are invited to communicate with ESE staff regarding what role
@@ -928,7 +928,7 @@ politics, energy, communications (media), and so forth.
 <para>One of ESE's primary goals is that the private individual be
 empowered above the corporation (and the government) at almost every
 turn because the current rules and policies of the various governments
-strongly favor corporations.  <application>N-Dex</application>,
+strongly favor corporations.  <application>N-Angulator</application>,
 being free for private use is hoped to be one small leveling factor
 toward this end.  It is hoped that this will empower individuals to
 gather and organize information about evil doing corporations,
@@ -956,7 +956,7 @@ Glossary
 <glossdiv><title>A</title>
 <glossentry id="angle">
 <para>A path of nodes that can together as one of several search
-restrictions.  A line on <application>N-Dex</application>'s screen used to locate or edit
+restrictions.  A line on <application>N-Angulator</application>'s screen used to locate or edit
 branches and leaves.
 </para>
 </glossdiv>
