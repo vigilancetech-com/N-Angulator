@@ -1266,23 +1266,23 @@ highly recursive and after entry, pool is not passed further down."
 		     :question text :buttons '(["Dismiss" '() t]))))
 
 (defun na ()
-  "Main entry to Nang"
+  "Main entry to Nangulator"
   (interactive)
   (message
-   "Now running Nang (c) 2003 Nang.com -- All rights reserved")
-  (na-getmake-buffer "*Nang*") ; create a buffer with the files name
+   "Now running Nangulator (c) 2011 TurbInfo.com -- All rights reserved")
+  (na-getmake-buffer "*Nangulator*") ; create a buffer with the files name
 
   (mailcap-parse-mailcaps nil t) ; force reparse
 
   (widget-create 'push-button
-"                        Welcome to Nang!                           ")
+"                         Welcome to N-Angulator!                       ")
   (widget-insert "\n")
   (widget-create 'push-button
-"     Persistent N-Dimensional Sparse Array, Editor, and Browser     ")
+"      Persistent N-Dimensional Sparse Array, Editor, and Browser       ")
   (widget-insert "\n")
   (widget-create 'push-button
 		 :action '(lambda (widget &optional event) (message "hit the copyright button"))
-"        Copyright (c) 2003, Nang.com - All Rights Reserved.        ")
+"        Copyright (c) 2011, TurbInfo.com - All Rights Reserved.        ")
 
   (widget-insert "\n\n                    ")
   (widget-create
