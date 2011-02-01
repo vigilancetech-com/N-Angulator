@@ -433,9 +433,6 @@ value if this widget did not override the parent"
 ;   and preferred applications for each (like the first one in .mailcap be the viewer
 ;   and if there is another one, have it be the default editor).
 
-; there is a bug here that when an empty file is read it trys to load
-; mime content rather than just bringing up the buffer.
-
   :value-set (lambda (widget value)
 	       (if (eq  (widget-type (widget-get widget :explicit-choice))
 			'leaf-edit)
@@ -553,8 +550,8 @@ value if this widget did not override the parent"
 			 '("Move to Selection" . na-move-select))
 		      '(("Duplicate Links to Selected" . na-dup-links)))))
 		event)))
-      (otherwise
-       (funcall (na-default 'leaf :mouse-down-action) widget event)))))
+       (3
+	(funcall (na-default 'leaf :mouse-down-action) widget event)))))
 
 (defun na-dup-links ()
   "Link current leaf to all places selected leaf is linked."
