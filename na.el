@@ -1,6 +1,6 @@
 ;;; na.el -- Nangulator: Persistent N-Dimensional Sparse Array, Editor, and Browser
 
-;; Copyright (C) 2001, 2002, 2003
+;; Copyright (C) 2011
 ;;       TurbInfo.com -- All Rights Reserved
 
 ;; Author: Kevin Haddock <kevinhaddock@yahoo.com>
@@ -11,13 +11,13 @@
 
 ;; This program runs under XEmacs
 
-;; Nangulator is free software; you can redistribute it and/or modify
+;; N-Angulator is free software; you can redistribute it and/or modify
 ;; it under the terms of the TurbInfo.com Public
 ;; License as published by TurbInfo.com
 ;; either version 1, or (at your option)
 ;; any later version.
 
-;; Nangulator is distributed in the hope that it will be useful,
+;; N-Angulator is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; TurbInfo.com Public License for more details.
@@ -26,7 +26,7 @@
 ;; Public License  along with Nangulator; see the file COPYING.
 ;; If not, write to:
 ;; TurbInfo.com
-;; Attn: Kevin Haddock
+;; Attn: KEVIN HADDOCK
 ;; 975 East Ave. PMB 112
 ;; Chico, CA 95926, USA.
 
@@ -37,7 +37,7 @@
 ;; This utility can optionally work in conjunction with an
 ;; automated document generation system (mrg.el) by the same author.
 
-;; Nangulator makes use of Unix-like file systems that allow hard links to files
+;; N-Angulator makes use of Unix-like file systems that allow hard links to files
 ;; (the same file showing up in different places in the file-system hierarchy under
 ;; possibly different names).  It turns this feature into an automated, multi-indexed,
 ;; multimedia file cabinet where items and groups of items can be incrementally searched
@@ -47,24 +47,24 @@
 ;; the process of 'triangulating' the source of a radio signal except that N different 'angles'
 ;; may be (and usually are) employed rather than just two.
 
-;; Nangulator also allows one to easily add, delete, and modify the elements in the tree, hence
+;; N-Angulator also allows one to easily add, delete, and modify the elements in the tree, hence
 ;; it's role as file tool, or 'editor.'  It is 'persistent' because very rapidly (usually no
 ;; more than 30 seconds, depending on the operating system's cache) all changes are committed
 ;; to disk and more or less permanent.  It is somewhat object oriented because it uses the mime
 ;; library to deal with each file type independently.
 
-;; Nangangulator's possible (future) uses could be:  Internet bookmark file, search engine, link farm,
+;; N-Angangulator's possible (future) uses could be:  Internet bookmark file, search engine, link farm,
 ;; sales contact management, multi-media archive, etc... or literally any extensive multi-indexed filing
 ;; application.
 
-;; NOTE: Nangulator is not GPL and is not for commercial (for profit) use without prior written
+;; NOTE: N-Angulator is not GPL and is not for commercial (for profit) use without prior written
 ;; approval/license from the author and/or owner.  It is free for your private use and we look forward
 ;; to discussing enterprise partnerships for commercial applications.  
 
 ;; NOTE TO DEVELOPERS: Since Nangulator is not truly copylefted, if you contribute to its development
 ;; (especially on the conceptual level) we promise to cut you in on any commercial royalties to an
 ;; objectively proportionate amount (as to be determined by a mutually agreeable third party if necessary).
-;; We believe Nangulator to be the genesis of a revolutionary new paradigm of human/machine interaction
+;; We believe N-Angulator to be the genesis of a revolutionary new paradigm of human/machine interaction
 ;; and any workman (or woman) contributing effectively to this revolution is worthy of their hire.
 
 ;; CAVEAT TO THIEVES: TurbInfo.com's ordinary business is private banking, commercial law,
@@ -433,6 +433,9 @@ value if this widget did not override the parent"
 ;   and preferred applications for each (like the first one in .mailcap be the viewer
 ;   and if there is another one, have it be the default editor).
 
+; there is a bug here that when an empty file is read it trys to load
+; mime content rather than just bringing up the buffer.
+
   :value-set (lambda (widget value)
 	       (if (eq  (widget-type (widget-get widget :explicit-choice))
 			'leaf-edit)
@@ -461,8 +464,11 @@ value if this widget did not override the parent"
 			 ;; mm-display-part below
 			 (setq  buffer-file-coding-system-for-read
 				mm-binary-coding-system) ;
-			 (insert-file-contents name); read the file in there
-			 (mm-display-part handle)
+
+			 ; read the file in there
+			 (if (not (eq (car (cdr (insert-file-contents name))) 0))
+			     (mm-display-part handle)
+			   (find-file name))
 			 (kill-buffer buffer)))) ;There appears to be junk left in ~/tmp -- needs to be del'd
 		 (funcall (na-default 'leaf :value-set) widget value))))
 
@@ -498,6 +504,16 @@ value if this widget did not override the parent"
     ;; that?
     ;; Should not allow creation of leaves in any but the first angle.  Then
     ;; blow away all entries after the subbranch wherein leaf was created.
+    ;; better yet: only show create-leaf menu item when there are items in 'members?'
+    ;; that way it can be made a member when created?
+    ;; is that right?
+    ;; leaf creation rules:
+    ;; - leaf will go into members if on first angle or all prior angles are subangels of this
+    ;; - otherwise leaf will go into others
+    ;;   (how to test for this?)
+    ;;   (should a leaf be able to be created in others?  I think so because otherwise
+    ;;    how do you create the fist leaf in the system?)
+    ;;   (also, 
     (widget-put widget :path default-directory) ; buggy line?
     (push widget na-leaves)
     (widget-put widget :args
@@ -1068,9 +1084,9 @@ and inode strings"
 	      :pool ,pool
 	      :value "New Angle"))
 	    ;  (choice-item "")))
-     '((item :value "-----"))
+     '((choice-item :value "--single-line"))
      (na-do-args (first data) (third data)) ;'member' branches and leaves
-     '((item :value "-----"))
+     '((choice-item :value "--single-line"))
      (na-do-args (second data) (fourth data))))) ;'other' branches and leaves
 
 
