@@ -532,24 +532,24 @@ value if this widget did not override the parent"
 	  na-location widget)
     (case button
       (2
-       (funcall (widget-choose
-		 "Leaf Command Menu"  
-		 (append
-		  '(("Remove this Link" . na-remove-link))
-		  '(("Remove all Occurances" . na-purge-leaf))
-		  '(("Set as Selection" . na-set-selection))
-		  '(("Rename Leaf" . na-rename-leaf))
-		  '(("Edit All Angles" . na-all-angles))
-		  '(("Display all Angles" . na-all-angles-display))
-		  '(("Demote Node" . na-demote-node))
-		  (unless (equal "" selected)
-		    (if (string-match "/$" selected)
-			(list
-			 '("Link to Selection" . na-link-select)
-			 '("Copy to Selection" . na-copy-select)
-			 '("Move to Selection" . na-move-select))
-		      '(("Duplicate Links to Selected" . na-dup-links)))))
-		event)))
+	 (funcall (widget-choose
+		   "Leaf Command Menu"  
+		   (append
+		    '(("Remove this Link" . na-remove-link))
+		    '(("Remove all Occurances" . na-purge-leaf))
+		    '(("Set as Selection" . na-set-selection))
+		    '(("Rename Leaf" . na-rename-leaf))
+		    '(("Edit All Angles" . na-all-angles))
+		    '(("Display all Angles" . na-all-angles-display))
+		    '(("Demote Node" . na-demote-node))
+		    (unless (equal "" selected)
+		      (if (string-match "/$" selected)
+			  (list
+			   '("Link to Selection" . na-link-select)
+			   '("Copy to Selection" . na-copy-select)
+			   '("Move to Selection" . na-move-select))
+			'(("Duplicate Links to Selected" . na-dup-links)))))
+		   event)))
        (3
 	(funcall (na-default 'leaf :mouse-down-action) widget event)))))
 
@@ -728,9 +728,10 @@ value if this widget did not override the parent"
     (setq na-leaves '((dummy :pool ""))) ; reset stack to empty
     (setq newangles
 	  (widget-create
+	   (setq na-aawids
 	   (na-all-angles-list
 	    (na-allnames inode)
-	    (na-inodes na-base-directory)))
+	    (na-inodes na-base-directory))))
 	  leaves2 na-leaves ; save the new leaves stack
 	  na-leaves leaves) ; restore the old one for the upcoming delete
     (widge:poolt-delete na-angles)
@@ -795,7 +796,6 @@ value if this widget did not override the parent"
 	  na-location widget)
     (case button
       (2
-       (progn
 	 (funcall (widget-choose
 		   "Branch Command Menu" 
 		   (append
@@ -811,7 +811,7 @@ value if this widget did not override the parent"
 			'("Link Contents to Selection" . na-branch-link)
 			'("Copy Contents to Selection" . na-branch-copy)
 			'("Move Contents to Selection" . na-branch-move))))
-		   event))))
+		   event)))
       (3
        (funcall (na-default 'branch :mouse-down-action) widget event)))))
 
@@ -1251,7 +1251,7 @@ highly recursive and after entry, pool is not passed further down."
 	`(angle :path ,na-base-directory  :value ,(concat (car name) "/")
 	  :pool ,pool :explicit-choice ,(na-all-angles-list names nil))
       (if (cdr name)			;not leaf
-	  `(node :tag ,(concat (car name) "/") 
+	  `(node :tag ,(concat (car name) "/") :path ,na-base-directory 
 	    :explicit-choice ,(na-all-angles-list
 			       (append
 				(list (cdr name)) (cdr names)) nil))
