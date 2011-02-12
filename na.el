@@ -730,7 +730,7 @@ value if this widget did not override the parent"
 	  (widget-create
 	   (setq na-aawids
 	   (na-all-angles-list
-	    (na-allnames inode)
+	    (na-allnames inode) na-base-directory
 	    (na-inodes na-base-directory))))
 	  leaves2 na-leaves ; save the new leaves stack
 	  na-leaves leaves) ; restore the old one for the upcoming delete
@@ -1240,29 +1240,51 @@ of file represented by inode, relative to the na-base-directory"
      (na-allnames-unsplit inode))))
 
 
-(defun na-all-angles-list (names pool)
+(defun na-all-angles-list (names path pool)
   "Generates the list compatible with widget-create given the result
-from na-allnames and the pool of all inodes below na-base-directory.
+from na-allnames, the current path and the pool of all inodes below na-base-directory.
 If the pool is not nil, then the initial angle is created, otherwise
 continuing nodes, leaves, and angles are created.  This function is
 highly recursive and after entry, pool is not passed further down."
-  (let ((name (car names)))
-    (if pool				;first time in
-	`(angle :path ,na-base-directory  :value ,(concat (car name) "/")
-	  :pool ,pool :explicit-choice ,(na-all-angles-list names nil))
-      (if (cdr name)			;not leaf
-	  `(node :tag ,(concat (car name) "/") :path ,na-base-directory 
-	    :explicit-choice ,(na-all-angles-list
-			       (append
-				(list (cdr name)) (cdr names)) nil))
-	(append `(leaf :tag ,(car name))
-	  (if (cdr names)
-	      `(:explicit-choice
-		(angle :path ,na-base-directory
-		       :value ,(concat (caadr names) "/")
-		       :explicit-choice
-		       ,(na-all-angles-list
-			 (cdr names) nil)))))))))
+
+; is there no way to get the previous path's here?
+; do we have to pass it as an argument?
+; will that 'cure' the pool problem?
+; this is given a list of lists (of angles)
+
+  (let* ((name (car names)) ; the list representing the 1st angle
+	(bvalue (concat (car name) "/")) ; next branch to create
+	(bpath (concat path bvalue))) ;full path to the next branch to create
+	; will be passed as path argument to recursions
+	`(angle :path ,na-base-directory  :value ,bvalue
+	  :pool ,pool :explicit-choice ,(na-all-angles-list-nth (cdr name) bpath))))
+
+(defun na-all-angles-list-nth (names path)
+  "Generates the list compatible with widget-create given the result
+from na-allnames and the current path.
+continuing nodes, leaves, and angles are created.  This function is
+highly recursive and after entry."
+; is there no way to get the previous path's here?
+; do we have to pass it as an argument?
+; will that 'cure' the pool problem?
+  (let* ((name (car names)); first name in the list (e.g. the next node to create)
+	 (bvalue (concat name "/")) ; always the next branch to create
+	 (bpath (concat path bvalue))) ; always the full path to the next branch to create
+					; will be passed as path argument to recursions
+    (if (cdr names)			;not leaf
+	`(node :tag ,bvalue :path ,bpath 
+	       :explicit-choice ,(na-all-angles-list-nth
+				  (cdr names) bpath))
+      (append `(leaf :tag ,name)
+	      (if (cdr names)
+		  `(:explicit-choice
+		    (angle :path ,bpath
+			   :value ,(concat (caadr names) "/")
+			   :explicit-choice
+			   ,(na-all-angles-list-nth
+			     (cdr names) na-base-directory))))))))
+
+
 	       
 ; Get buffer to do widgets in
 
