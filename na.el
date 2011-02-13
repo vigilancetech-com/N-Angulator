@@ -728,10 +728,9 @@ value if this widget did not override the parent"
     (setq na-leaves '((dummy :pool ""))) ; reset stack to empty
     (setq newangles
 	  (widget-create
-	   (setq na-aawids
 	   (na-all-angles-list
 	    (na-allnames inode) na-base-directory
-	    (na-inodes na-base-directory))))
+	    (na-inodes na-base-directory)))
 	  leaves2 na-leaves ; save the new leaves stack
 	  na-leaves leaves) ; restore the old one for the upcoming delete
     (widget-delete na-angles)
