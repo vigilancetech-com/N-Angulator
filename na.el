@@ -730,11 +730,11 @@ value if this widget did not override the parent"
 	  (widget-create
 	   (setq na-aawids
 	   (na-all-angles-list
-	    (na-allnames inode)
+	    (na-allnames inode) na-base-directory
 	    (na-inodes na-base-directory))))
 	  leaves2 na-leaves ; save the new leaves stack
 	  na-leaves leaves) ; restore the old one for the upcoming delete
-    (widge:poolt-delete na-angles)
+    (widget-delete na-angles)
     (setq na-angles newangles
 	  na-leaves leaves2)
     (widget-setup)))
@@ -1240,29 +1240,31 @@ of file represented by inode, relative to the na-base-directory"
      (na-allnames-unsplit inode))))
 
 
-(defun na-all-angles-list (names pool)
+(defun na-all-angles-list (names path pool)
   "Generates the list compatible with widget-create given the result
 from na-allnames and the pool of all inodes below na-base-directory.
 If the pool is not nil, then the initial angle is created, otherwise
 continuing nodes, leaves, and angles are created.  This function is
 highly recursive and after entry, pool is not passed further down."
-  (let ((name (car names)))
+  (let* ((angle (car names))  ;the angle we are working on
+	 (name (car angle))   ;name of next angle/leaf to construct
+	 (bname (concat name "/")) ; the name as a branch
+	 (bpath (concat path bname))) ; full path to the current node
     (if pool				;first time in
-	`(angle :path ,na-base-directory  :value ,(concat (car name) "/")
-	  :pool ,pool :explicit-choice ,(na-all-angles-list names nil))
-      (if (cdr name)			;not leaf
-	  `(node :tag ,(concat (car name) "/") :path ,na-base-directory 
-	    :explicit-choice ,(na-all-angles-list
-			       (append
-				(list (cdr name)) (cdr names)) nil))
-	(append `(leaf :tag ,(car name))
-	  (if (cdr names)
-	      `(:explicit-choice
-		(angle :path ,na-base-directory
-		       :value ,(concat (caadr names) "/")
-		       :explicit-choice
-		       ,(na-all-angles-list
-			 (cdr names) nil)))))))))
+	`(angle :path ,na-base-directory  :value ,"/" ; was bname
+		:pool ,pool
+		:explicit-choice ,(na-all-angles-list names na-base-directory nil))
+      (if (cdr angle)			;not leaf
+	  `(node :tag ,bname :path ,bpath 
+		 :explicit-choice ,(na-all-angles-list (cons (cdar names) (cdr names)) bpath nil))
+	(append `(leaf :tag ,name)
+		(if (cdr names)
+		    `(:explicit-choice
+		      (angle :path ,na-base-directory
+			     :value ,(concat (caadr names) "/")
+			     :explicit-choice
+			     ,(na-all-angles-list
+			       (cdr names) na-base-directory nil)))))))))
 	       
 ; Get buffer to do widgets in
 
