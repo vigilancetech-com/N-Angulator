@@ -108,11 +108,11 @@
 
 (require 'dired)
 (require 'widget)
-(eval-when-compile (require 'cl)) ; for case function
+;(eval-when-compile (require 'cl)) ; for case function
 (require 'mailcap)
-(require 'mm)
+;(require 'mm)
 (require 'mm-view)
-(require 'mail-parse)
+;(require 'mail-parse)
 (require 'gnus)
 (require 'edebug)
 ;(require 'mrg) ; comment out unless doing na-autolink
@@ -451,22 +451,24 @@ value if this widget did not override the parent"
 			     (setq buffer (find-file-noselect name))
 			     (goto-char (point-min buffer) buffer)
 			     (switch-to-buffer buffer))
-			 (set-buffer buffer); the gensym'ed one.
-			 ;; if coding system is not set, any file
-			 ;; with the wrong, or no, file extension
-			 ;; will not work with external viewers
-			 ;; because it gets altered when bringing
-			 ;; it into the buffer and a corrupted
-			 ;; file is output by subfunctions of
-			 ;; mm-display-part below
-			 (setq  buffer-file-coding-system-for-read
-				mm-binary-coding-system) ;
+; 			 (set-buffer buffer); the gensym'ed one.
+; 			 ;; if coding system is not set, any file
+; 			 ;; with the wrong, or no, file extension
+; 			 ;; will not work with external viewers
+; 			 ;; because it gets altered when bringing
+; 			 ;; it into the buffer and a corrupted
+; 			 ;; file is output by subfunctions of
+; 			 ;; mm-display-part below
+; 			 (setq  buffer-file-coding-system-for-read
+; 				mm-binary-coding-system) ;
 
-			 ; read the file in there
-			 (if (not (eq (car (cdr (insert-file-contents name))) 0))
-			     (mm-display-part handle)
-			   (find-file name))
-			 (kill-buffer buffer)))) ;There appears to be junk left in ~/tmp -- needs to be del'd
+; 			 ; read the file in there
+; 			 (if (not (eq (car (cdr (insert-file-contents name))) 0))
+; 			     (mm-display-part handle)
+; 			   (find-file name))
+			 (kill-buffer buffer)
+			 (shell-command (concat "xdg-open " "\"" name "\" &")))))
+			 ;There appears to be junk left in ~/tmp -- needs to be del'd
 		 (funcall (na-default 'leaf :value-set) widget value))))
 
 (defun na-leaf-delete (widget)
@@ -801,7 +803,8 @@ value if this widget did not override the parent"
 		    '(("Rename Branch" . na-rename-branch)) ; unless a root?
 		     (if (cdr na-leaves) ; any actively selected leaves?
 			 '(("Add a Link" . na-add-link))
-		       '(("Create New Leaf" . na-new-leaf)))
+		       '(("Create New Leaf" . na-new-leaf)
+			 ("Create BookMark" . na-bookmark)))
 		     '(("Set as Selection" . na-set-selection))
 		     '(("Add New Subbranch" . na-add-branch))
 		     '(("Prune Branch" . na-prune-branch))
@@ -916,6 +919,35 @@ value if this widget did not override the parent"
       (na-rebuild-brmenus)
       (na-update-all-named
        (widget-get parent :tag)))))
+
+; this function originally had the following line right after 'echo' below
+;<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">
+(defun na-bookmark ()
+  "Create a new bookmark under the current branch"
+  (let* ((newname (read-from-minibuffer "Enter bookmark name: "))
+	 (newurl (read-from-minibuffer "Enter URL: " "http://www."))
+	 (result (when newname
+		   (na-shell-string-read
+		    (concat "test ! -e \"" newname
+			    "\" && echo '<html>
+<meta http-equiv=\"REFRESH\" content=\"0;url="
+newurl "\"><html>'  > \""
+			     newname
+			    "\" || echo \"Error: File \'\"" newname
+			    "\"\' exists\! \""))))
+	(tmp widget)
+	(inode (na-inodes newname)))
+;    (while tmp
+;      (widget-put tmp :pool		;don't want to add to pool here if should be other
+;		(exec-to-string
+;		 (format "echo '%s' | sort -u"
+;			 (concat  (widget-get tmp :pool)
+;			inode))))
+;      (setq tmp (widget-get tmp :parent)))
+    (na-error result)
+    (na-pool-add inode)
+    (na-rebuild-brmenus)
+    (widget-setup)))
 
 (defun na-new-leaf ()
   "Create a new leaf under the current branch"
@@ -1080,9 +1112,11 @@ and inode strings"
 	      :pool ,pool
 	      :value "New Angle"))
 	    ;  (choice-item "")))
-     '((choice-item :value "--single-line"))
+     '((choice-item :value "-----------------"))
+;     '((choice-item :value "--single-line"))
      (na-do-args (first data) (third data)) ;'member' branches and leaves
-     '((choice-item :value "--single-line"))
+     '((choice-item :value "-----------------"))
+;     '((choice-item :value "--single-line"))
      (na-do-args (second data) (fourth data))))) ;'other' branches and leaves
 
 
