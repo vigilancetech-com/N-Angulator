@@ -436,40 +436,45 @@ value if this widget did not override the parent"
   :value-set (lambda (widget value)
 	       (if (eq  (widget-type (widget-get widget :explicit-choice))
 			'leaf-edit)
-		   (save-excursion
-		     (let* ((name (widget-get widget :tag))
-			    (buffer
-			     (generate-new-buffer
-			      (symbol-name (gensym))))
-			    (handle (list buffer  (na-mime-handle name)
-					  `(filename . ,name)
-					  nil nil nil '())))
-		       (if (and (mm-inlinable-p handle)
-				(mm-inlined-p handle))
-			   (progn
-			     (kill-buffer buffer)
-			     (setq buffer (find-file-noselect name))
-			     (goto-char (point-min buffer) buffer)
-			     (switch-to-buffer buffer))
-; 			 (set-buffer buffer); the gensym'ed one.
-; 			 ;; if coding system is not set, any file
-; 			 ;; with the wrong, or no, file extension
-; 			 ;; will not work with external viewers
-; 			 ;; because it gets altered when bringing
-; 			 ;; it into the buffer and a corrupted
-; 			 ;; file is output by subfunctions of
-; 			 ;; mm-display-part below
-; 			 (setq  buffer-file-coding-system-for-read
-; 				mm-binary-coding-system) ;
+		   (let ((name (widget-get widget :tag)))
 
-; 			 ; read the file in there
-; 			 (if (not (eq (car (cdr (insert-file-contents name))) 0))
-; 			     (mm-display-part handle)
-; 			   (find-file name))
-			 (kill-buffer buffer)
-			 (shell-command (concat "xdg-open " "\"" name "\" &")))))
+		     (shell-command (concat "xdg-open " "\"" name "\" &"))
 			 ;There appears to be junk left in ~/tmp -- needs to be del'd
-		 (funcall (na-default 'leaf :value-set) widget value))))
+		     (funcall (na-default 'leaf :value-set) widget value)))))
+
+; this was the old code above
+;		   (save-excursion
+;		     (let* ((name (widget-get widget :tag))
+;			    (buffer
+;			     (generate-new-buffer
+;			      (symbol-name (gensym))))
+;			    (handle (list buffer  (na-mime-handle name)
+;					  `(filename . ,name)
+;					  nil nil nil '())))
+;		       (if (and (mm-inlinable-p handle)
+;				(mm-inlined-p handle))
+;			   (progn
+;			     (kill-buffer buffer)
+;			     (setq buffer (find-file-noselect name))
+;			     (goto-char (point-min buffer) buffer)
+;			     (switch-to-buffer buffer))
+;; 			 (set-buffer buffer); the gensym'ed one.
+;; 			 ;; if coding system is not set, any file
+;; 			 ;; with the wrong, or no, file extension
+;; 			 ;; will not work with external viewers
+;; 			 ;; because it gets altered when bringing
+;; 			 ;; it into the buffer and a corrupted
+;; 			 ;; file is output by subfunctions of
+;; 			 ;; mm-display-part below
+;; 			 (setq  buffer-file-coding-system-for-read
+;; 				mm-binary-coding-system) ;
+
+;; 			 ; read the file in there
+;; 			 (if (not (eq (car (cdr (insert-file-contents name))) 0))
+;; 			     (mm-display-part handle)
+;; 			   (find-file name))
+;			 (kill-buffer buffer)
+
 
 (defun na-leaf-delete (widget)
   "Remove widget from the na-leaves before completing the delete"
