@@ -106,6 +106,7 @@
 ;;
 ;;; Code:
 
+;(load "eshell-auto")
 (require 'dired)
 (require 'widget)
 ;(eval-when-compile (require 'cl)) ; for case function
@@ -237,7 +238,7 @@
 (defun na-rebuild-brmenus (&optional candidate)
 
 "Rebuild the given widget's branch menu or all the menus flagged as
-needing rebuilding by na-branch-delete if none given.  In either case,
+helneeding rebuilding by na-branch-delete if none given.  In either case,
 remove the rebuilt menu(s) from the list of ones flagged.
 
 This is factored out because when moving links, first you start with a delete,
@@ -438,9 +439,9 @@ value if this widget did not override the parent"
 			'leaf-edit)
 		   (let ((name (widget-get widget :tag)))
 
-		     (shell-command (concat "xdg-open " "\"" name "\" &"))
+		     (eshell-command (concat "xdg-open " "\"" name "\" &") "*scratch*"))
 			 ;There appears to be junk left in ~/tmp -- needs to be del'd
-		     (funcall (na-default 'leaf :value-set) widget value)))))
+		     (funcall (na-default 'leaf :value-set) widget value))))
 
 ; this was the old code above
 ;		   (save-excursion
@@ -1193,7 +1194,7 @@ in the node/branch situation"
   "Nang editor and support library"
   :link '(custom-manual "(nd)Top")
   :link '(url-link :tag "Development Page"
-		   "http://www.nangulator.com")
+		   "http://www.TurbInfo.com")
   :prefix "widget-"
   :group 'extensions
   :group 'hypermedia)
@@ -1319,25 +1320,25 @@ highly recursive and after entry, pool is not passed further down."
 		     :question text :buttons '(["Dismiss" '() t]))))
 
 (defun na ()
-  "Main entry to Nangulator"
+  "Main entry to N-Angulator"
   (interactive)
   (message
-   "Now running Nangulator (c) 2011 TurbInfo.com -- All rights reserved")
-  (na-getmake-buffer "*Nangulator*") ; create a buffer with the files name
+   "Now running N-Angulator (c) 2011 TurbInfo.com -- All rights reserved")
+  (na-getmake-buffer "*N-Angulator*") ; create a buffer with the files name
 
   (mailcap-parse-mailcaps nil t) ; force reparse
 
   (widget-create 'push-button
-"                         Welcome to N-Angulator!                       ")
+"                             Welcome to N-Angulator!                           ")
   (widget-insert "\n")
   (widget-create 'push-button
-"      Persistent N-Dimensional Sparse Array, Editor, and Browser       ")
+"          Persistent N-Dimensional Sparse Array, Editor, and Browser           ")
   (widget-insert "\n")
   (widget-create 'push-button
 		 :action '(lambda (widget &optional event) (message "hit the copyright button"))
-"        Copyright (c) 2011, TurbInfo.com - All Rights Reserved.        ")
+"            Copyright (c) 2011, TurbInfo.com - All Rights Reserved.            ")
 
-  (widget-insert "\n\n                    ")
+  (widget-insert "\n\n                              ")
   (widget-create
    'push-button
    :action 'na-refresh-screen "Refresh Display")
