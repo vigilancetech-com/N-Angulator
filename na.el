@@ -439,7 +439,7 @@ value if this widget did not override the parent"
 			'leaf-edit)
 		   (let ((name (widget-get widget :tag)))
 
-		     (setq foo (start-process "view" "*scratch*" "xdg-open" (concat "\"" name "\"" ))))
+		     (setq foo (start-process "view" "*scratch*" "xdg-open"  name )))
 ;		     (eshell-command (concat "xdg-open " "\"" name "\" &") "*scratch*"))
 			 ;There appears to be junk left in ~/tmp -- needs to be del'd
 		     (funcall (na-default 'leaf :value-set) widget value))))
