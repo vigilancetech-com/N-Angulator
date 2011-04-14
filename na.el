@@ -9,7 +9,7 @@
 ;; Version: 0.1
 ;; X-URL:
 
-;; This program runs under XEmacs
+;; This program runs under SXEmacs
 
 ;; N-Angulator is free software; you can redistribute it and/or modify
 ;; it under the terms of the TurbInfo.com Public
@@ -23,7 +23,7 @@
 ;; TurbInfo.com Public License for more details.
 
 ;; You should have received a copy of the TurbInfo.com
-;; Public License  along with Nangulator; see the file COPYING.
+;; Public License  along with N-Angulator; see the file COPYING.
 ;; If not, write to:
 ;; TurbInfo.com
 ;; Attn: KEVIN HADDOCK
@@ -41,7 +41,7 @@
 ;; (the same file showing up in different places in the file-system hierarchy under
 ;; possibly different names).  It turns this feature into an automated, multi-indexed,
 ;; multimedia file cabinet where items and groups of items can be incrementally searched
-;; by doing a series of union and intersection 'set' operations.  In Nangulator speak, files
+;; by doing a series of union and intersection 'set' operations.  In N-Angulator speak, files
 ;; are called 'leaves,' directories are called 'branches,' and the incremental searches called
 ;; 'angles.'  It is called 'Nangulator' because locating the desired information resembles
 ;; the process of 'triangulating' the source of a radio signal except that N different 'angles'
