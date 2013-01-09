@@ -1,0 +1,21 @@
+To install N-Angulator (n-a):
+
+Place the file na.el somewhere in your (x)emacs' load path (contents
+of the load-path (x)emacs variable) and the na-members.sh somehere in
+your login shell's PATH variable (e.g. /usr/local/bin).  Set
+permissions on the na-members.sh to execute with something like this:
+
+# chmod +x /usr/local/bin/na-members.sh
+
+Set n-a's root variable (na-base-directory) within (x)emacs to a directory you have write
+permissions to (e.g. /home/nadb).  It can be found under the "Options
+-> Advance (Customize) -> variable" then typed in in the minibuffer,
+or under "Options -> Advanced (Customize) -> Emacs -> Hypermedia ->
+Na" menu options.
+
+Start xemacs.  Type M-x load-library na <enter>
+
+Then:  M-x na <enter>
+
+Note: it is currently not possible to run more than one instance of
+n-a in a single (x)emacs session.

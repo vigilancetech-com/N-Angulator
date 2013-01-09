@@ -1,0 +1,10 @@
+This directory contains source code for the parts of N-Angulator.  The
+na.el file is (X)emacs Lisp source, and the corresponding *.elc file is the
+byte-compiled versions.  Byte-compiled files are architecture-independent.
+
+The na-members.sh is a Borne Again Shell file which must be relocated somewhere
+within the user's path (e.g. /usr/local/bin).
+
+See INSTALL for installation instructions.
+
+See COPYING for license information.

@@ -1,31 +1,34 @@
-;;; na.el -- Nangulator: Persistent N-Dimensional Sparse Array, Editor, and Browser
+;;; na.el -- N-Angulator: Persistent N-Dimensional Sparse Array, Editor, and Browser
 
-;; Copyright (C) 2011
-;;       TurbInfo.com -- All Rights Reserved
+;; Copyright (C) 2000
+;;    Kevin Haddock and N-Angulator.org -- All Rights Reserved
 
-;; Author: Kevin Haddock <kevinhaddock@yahoo.com>
-;; Maintainer: Kevin Haddock <kevinhaddock@yahoo.com>
+;; Author: Kevin Haddock <support@n-angulator.org>
+;; Maintainer: Kevin Haddock <support@n-angulator.org>
 ;; Keywords: database, hypermedia, persistent, object oriented, file tool, search engine
 ;; Version: 0.1
 ;; X-URL:
 
-;; This program runs under SXEmacs
+;; This program runs under XEmacs
 
-;; N-Angulator is free software; you can redistribute it and/or modify
-;; it under the terms of the TurbInfo.com Public
-;; License as published by TurbInfo.com
-;; either version 1, or (at your option)
-;; any later version.
+;; N-Angulator is free software; you can redistribute it and/or modify it under the terms of
+;; the N-Angulator.org Public License as published by N-Angulator.org
+;; either version 1, or (at your option) any later version (see the file COPYING distributed
+;; with this file or online at:
+;;
+;;    http://www.n-angulator.org/license
+
 
 ;; N-Angulator is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; TurbInfo.com Public License for more details.
+;; N-Angulator.org Public License for more details.
 
-;; You should have received a copy of the TurbInfo.com
+;; You should have received a copy of the N-Angulator.org
 ;; Public License  along with N-Angulator; see the file COPYING.
 ;; If not, write to:
-;; TurbInfo.com
+;;
+;; N-Angulator.org
 ;; Attn: KEVIN HADDOCK
 ;; 975 East Ave. PMB 112
 ;; Chico, CA 95926, USA.
@@ -43,7 +46,7 @@
 ;; multimedia file cabinet where items and groups of items can be incrementally searched
 ;; by doing a series of union and intersection 'set' operations.  In N-Angulator speak, files
 ;; are called 'leaves,' directories are called 'branches,' and the incremental searches called
-;; 'angles.'  It is called 'Nangulator' because locating the desired information resembles
+;; 'angles.'  It is called 'N-angulator' because locating the desired information resembles
 ;; the process of 'triangulating' the source of a radio signal except that N different 'angles'
 ;; may be (and usually are) employed rather than just two.
 
@@ -53,28 +56,15 @@
 ;; to disk and more or less permanent.  It is somewhat object oriented because it uses the mime
 ;; library to deal with each file type independently.
 
-;; N-Angangulator's possible (future) uses could be:  Internet bookmark file, search engine, link farm,
-;; sales contact management, multi-media archive, etc... or literally any extensive multi-indexed filing
-;; application.
+;; N-Angangulator's possible (future) uses could be:  Internet bookmark file, search engine, 
+;; link farm, sales contact management, multi-media archive, etc... or literally any extensive
+;; multi-indexed filing application.
 
-;; NOTE: N-Angulator is not GPL and is not for commercial (for profit) use without prior written
-;; approval/license from the author and/or owner.  It is free for your private use and we look forward
-;; to discussing enterprise partnerships for commercial applications.  
+;; NOTE: N-Angulator uses a modified GPL license but construcively for contributors other
+;; those specifically designated by its owner/originator, constibutions are considered governed
+;; by GPL version 2.  Contact the owner/originator at support@n-angulator.org for further details.
 
-;; NOTE TO DEVELOPERS: Since Nangulator is not truly copylefted, if you contribute to its development
-;; (especially on the conceptual level) we promise to cut you in on any commercial royalties to an
-;; objectively proportionate amount (as to be determined by a mutually agreeable third party if necessary).
-;; We believe N-Angulator to be the genesis of a revolutionary new paradigm of human/machine interaction
-;; and any workman (or woman) contributing effectively to this revolution is worthy of their hire.
-
-;; CAVEAT TO THIEVES: TurbInfo.com's ordinary business is private banking, commercial law,
-;; and legal procedure.  If you use this software (or this concept) for profit without our license you will
-;; soon find that you chose the most expensive route by far.  We have zero tolerance for those with the
-;; N.I.H. (Not Invented Here) mentality (i.e. those who would rather steal that which they could not
-;; invent plus have no clue about mutually profitable long term relationships and/or value for value
-;; exchange).
-;;
-;; to do:
+;; To do:
 ;;   Get an invalid function nil menu when pulling off a branch/leaf menu.
 ;;   Na-pool-delete does not rebuild the pools correctly.  The subsequent branches
 ;;      don't have everything as members as if the deleted leaf had not been selected
@@ -82,11 +72,12 @@
 ;;   Try dynamic scoping of default-directory with creation as local then destruction reveals orig
 ;;   Add "display leaf type" and perhaps "display leaf info" to leaf menu.
 ;;   Add "display branch info" to branch menu.
-;;   Somewhere along the line :pool gets a \n at its beginning which can cause excessive na-branch-arguments rebuilds
+;;   Somewhere along the line :pool gets a \n at its beginning which can cause excessive
+;;      na-branch-arguments rebuilds
 ;;   Update screen widgets that have changed names or been deleted without disturbing anything else
-;;   Stop Nang from messing up parens display highlighting in elisp source
-;;   Stop Nang error clicking branch after creating leaf/link there
-;;   Make Nang use eshell functions wherever possible
+;;   Stop Na from messing up parens display highlighting in elisp source
+;;   Stop Na error clicking branch after creating leaf/link there
+;;   Make Na use eshell functions wherever possible
 ;;   Fix pop up menu's solid lines (in widget package?)
 ;;   Make inactive widgets in popup menus gray and unselectable (in widget package?)
 ;;   Replicate this branch in new angle below.
@@ -101,7 +92,7 @@
 ;;   Implement sugrp as xemacs primitive
 ;;   Considering keeping directory inodes to improve screen updates
 ;;   Make leaf and branch modifications more object oriented
-;;   Make Nang look and behave somewhat like Nautilus (or integrate Nang search features there)
+;;   Make Na look and behave somewhat like Nautilus (or integrate Na search features there)
 ;;   link to selection to already existing link pops bogus error
 ;;
 ;;; Code:
@@ -142,17 +133,17 @@
 
 (defcustom na-edit-mode t
   "True if desirous to edit leaf contents where-ever possible"
-  :group 'nang
+  :group 'na
   :type 'boolean)
 
-(defcustom na-base-directory "/home/nang/"
+(defcustom na-base-directory "/home/nadb/"
   "Root dir of na sparse array objects"
-  :group 'nang
+  :group 'na
   :type '(directory))
 
 (defcustom na-control-directory (concat na-base-directory "/.control")
   "Root dir of na sparse array objects"
-  :group 'nang
+  :group 'na
   :type '(directory))
 
 ;(defcustom na-autolink-templates
@@ -164,12 +155,12 @@
 (defcustom na-root-tag "  /"
   "The default tag for each angle's root"
   ; Might want this to reflect which angle number later (e.g. a format?)
-  :group 'nang
+  :group 'na
   :type '(text))
 
 (defcustom na-new-angle-tag "New Angle"
   "The tag that get's displayed in the menu for the root"
-  :group 'nang
+  :group 'na
   :type '(text))
 
 (fset 'na-message 'message);'yes-or-no-p-dialog-box)
@@ -1191,11 +1182,11 @@ in the node/branch situation"
   :action (lambda (widget)
 	    (if (or (widget-get)))))
 
-(defgroup nang nil
-  "Nang editor and support library"
+(defgroup na nil
+  "N-Angulator editor and support library"
   :link '(custom-manual "(nd)Top")
   :link '(url-link :tag "Development Page"
-		   "http://www.TurbInfo.com")
+		   "http://www.N-Angulator.org")
   :prefix "widget-"
   :group 'extensions
   :group 'hypermedia)
@@ -1309,7 +1300,7 @@ highly recursive and after entry, pool is not passed further down."
 ; Get buffer to do widgets in
 
 (defun na-getmake-buffer (buffname)
-  "Get or make buffer to do widgets/nang in"
+  "Get or make buffer to do widgets/na in"
   (kill-buffer (get-buffer-create buffname))
   (switch-to-buffer (get-buffer-create buffname))
   (kill-all-local-variables))
@@ -1381,4 +1372,4 @@ the :tag is nil but it has a value then it is a yet unclicked on branch"
       (setq last-result this-result))
     (widget-get last-result :parent)))
 
-(provide 'nang)
+(provide 'na)
