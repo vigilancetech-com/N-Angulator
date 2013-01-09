@@ -1315,7 +1315,7 @@ highly recursive and after entry, pool is not passed further down."
   "Main entry to N-Angulator"
   (interactive)
   (message
-   "Now running N-Angulator (c) 2011 TurbInfo.com -- All rights reserved")
+   "Now running N-Angulator (c) 2000 N-Angulator.org -- All rights reserved")
   (na-getmake-buffer "*N-Angulator*") ; create a buffer with the files name
 
   (mailcap-parse-mailcaps nil t) ; force reparse
@@ -1328,7 +1328,7 @@ highly recursive and after entry, pool is not passed further down."
   (widget-insert "\n")
   (widget-create 'push-button
 		 :action '(lambda (widget &optional event) (message "hit the copyright button"))
-"            Copyright (c) 2011, TurbInfo.com - All Rights Reserved.            ")
+"            Copyright (c) 2000 N-Angulator.org - All Rights Reserved.            ")
 
   (widget-insert "\n\n                              ")
   (widget-create
