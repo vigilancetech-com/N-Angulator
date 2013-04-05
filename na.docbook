@@ -46,14 +46,14 @@ screen.  </para>
 
 <application>N-Angulator</application> is free software for
 non-commercial use; you can redistribute it and/or modify it under the
-terms of the Eco-Symmetric Enterprises Public License as published by
-Eco-Symmetric Enterprises either version 1, or (at your option) any
+terms of the N-Angulator.org Public License as published by
+N-Angulator.org either version 1, or (at your option) any
 later version.  </para>
 
 <para> <application>N-Angulator</application> is distributed in the
 hope that it will be useful, but WITHOUT ANY WARRANTY; without even
 the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-PURPOSE.  See the Eco-Symmetric Enterprises Public License for more
+PURPOSE.  See the N-Angulator.org Public License for more
 details.  </para>
 
 <para> You should have received a copy of the Eco-Symmetric
@@ -63,7 +63,7 @@ write to: </para>
 
 <para>
 <address>
-Eco-Symmetric Enterprises
+N-Angulator.org
 Attn: Kevin Haddock
 <street>975 East Ave. PMB 112</street>
 <city>Chico</city>, <state>CA</state> <postcode> 95926</postcode>
@@ -873,78 +873,13 @@ for rooms full of clerks/operators in that function.
 The concept of N-Angulator as the fundamental human/machine/web interface
 is taking shape in the form of business plans, algorithms, custom
 hardware/IC designs, and so forth.  Investors, contributors, and interested
-parties are invited to communicate with ESE staff regarding what role
+parties are invited to communicate with N-Angulator.org staff regarding what role
 you think you might play in this exciting revolution!
 </para>
 
 <appendix>
-<title>What is Eco-Symmetric Enterprises?
+<title>What is N-Angulator.org?
 </title>
-
-<para>Eco-Symmetric Enterprises ("ESE") is the business trust vehicle
-that was initially created during my forayer into things other than
-computers back in the 1980's.  Our mission was to incubate and
-coordinate innovation in the area of alternative energy generally, and
-biomass farm energy in particular.  One of our first, and most
-significant projects was to marry the technologies created by the
-life's work of several inventors into a full spectrum solution to
-orchard slash and chaparal brush harvesting for powerplant boiler
-fuel.
-
-</para>
-
-<para> We attempted to provide cutting edge technology, management,
-finance, negotiation, and coordination as a service to our spin-offs.
-We foresaw the California electric energy crisis (as a contrived
-emergency created by the utilities to drain the budget and rob the
-taxpayers) far in advance.  Perhaps it was a little too far in advance
-because the money that would have easily funded our solutions to the
-farm, air pollution, and biomass energy problems, was, on several
-occasions, levied as fines against the actors in this area who had
-turned us down, and who would have benefited most by our technolgy
-(including avoiding said fines).  It was discouraging that people
-could be so short sighted.  Some players in our organization dropped
-out.  Other's joined.  Now our focus, although still on cutting edge
-technology, management, negotiation, financing, and incubation, is
-directed mostly at promotion of homeostatic
-solutions<footnote>Homeostasis refers to the ability of all the
-constituent parts of a organism or organization to operate efficiently
-in conjunction with each other.  See generally information on
-"Maslow's Hierarchy of Needs" for a further description.</footnote>.
-One must first have efficient, truthful, and fair interactions between
-the cells of one's body, then between oneself and the members of one's
-family, then oneself and one's friends/associates (i.e. one's
-company/corporation), then between oneself and one's community,
-between oneself and one's nation, then between oneself and the rest of
-humanity (then between one's company/corporation and all those
-entities).  Included in this mission is not only in setting an
-example, but also the promotion of quality information about physicalecho -n \\\";echo -n \"%s\"|sort|grep -v '^$'|uniq; echo \\\""
-health, effective management and compensation systems, the truth about
-law, win/win negotiation techniques, full disclosure economics,
-politics, energy, communications (media), and so forth.
-
-</para>
-
-<para>One of ESE's primary goals is that the private individual be
-empowered above the corporation (and the government) at almost every
-turn because the current rules and policies of the various governments
-strongly favor corporations.  <application>N-Angulator</application>,
-being free for private use is hoped to be one small leveling factor
-toward this end.  It is hoped that this will empower individuals to
-gather and organize information about evil doing corporations,
-governments and their actors such that these entities/acts can be
-mitigated, and also to empower individuals to compete effectively with
-them in a "David verses Goliath" fashion.  </para>
-
-<para> The commercial user (and any private donor) has our pledge that
-revenues received will be used toward the end of a better prioritized,
-more sane, just, and synergistic society.  We have modest needs,
-minimal appetites, and are throughly committed to this goal so are
-committed to remain "lean and mean" until objectivity, sanity,
-honesty, integrity, and efficiency is clearly the self--sustaining
-rule of our society and not the exception.
-
-</para>
 
 
 </appendix>

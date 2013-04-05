@@ -1102,7 +1102,7 @@ and inode strings"
   (let* ((pool (widget-get widget :pool))
 	 (foo (setq default-directory (widget-get widget :path)))
 	 (data (na-shell-read
-		(concat "echo -n \"" pool "\" | nd.members.sh"))))
+		(concat "echo -n \"" pool "\" | na.members.sh"))))
     (append
      `((angle :tag "New Angle"
 	      :format "\n\n %[%t%]%v"
