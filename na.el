@@ -109,6 +109,9 @@
 (require 'edebug)
 ;(require 'mrg) ; comment out unless doing na-autolink
 
+(unless (featurep 'xemacs)
+  (defalias 'exec-to-string 'shell-command-to-string)) 
+
 (mailcap-add-mailcap-entry
  "application" "x-empty" 
  '((viewer . fundamental-mode)
@@ -798,11 +801,11 @@ value if this widget did not override the parent"
 	 (funcall (widget-choose
 		   "Branch Command Menu" 
 		   (append
-		    '(("Rename Branch" . na-rename-branch)) ; unless a root?
 		     (if (cdr na-leaves) ; any actively selected leaves?
 			 '(("Add a Link" . na-add-link))
 		       '(("Create New Leaf" . na-new-leaf)
 			 ("Create BookMark" . na-bookmark)))
+		     '(("Rename Branch" . na-rename-branch)) ; unless a root?
 		     '(("Set as Selection" . na-set-selection))
 		     '(("Add New Subbranch" . na-add-branch))
 		     '(("Prune Branch" . na-prune-branch))
