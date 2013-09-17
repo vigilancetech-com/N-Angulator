@@ -1,4 +1,4 @@
-#! /bin/bash 
+#! /bin/sh 
 # this program takes a newline seporated list of inodes in its standard input
 # and returns a list of 4 lists containing:
 #    directory members, directory others, file members, and file others
