@@ -100,7 +100,9 @@
 ;(load "eshell-auto")
 (require 'dired)
 (require 'widget)
-;(eval-when-compile (require 'cl)) ; for case function
+(eval-when-compile
+  (require 'wid-edit))
+(eval-when-compile (require 'cl)) ; for case function
 (require 'mailcap)
 ;(require 'mm)
 (require 'mm-view)
@@ -110,7 +112,14 @@
 ;(require 'mrg) ; comment out unless doing na-autolink
 
 (unless (featurep 'xemacs)
-  (defalias 'exec-to-string 'shell-command-to-string)) 
+  (defalias 'exec-to-string 'shell-command-to-string)
+;;
+;; might need to add this back in for fsf port
+;;
+
+  ;; (dolist (event-type '(mouse-1 mouse-2 mouse-3
+  ;; 				M-down-mouse-1 M-down-mouse-2 M-down-mouse-3))
+  ;;   (put event-type 'event-kind 'mouse-click))) 
 
 (mailcap-add-mailcap-entry
  "application" "x-empty" 
@@ -525,6 +534,17 @@ value if this widget did not override the parent"
 		 (widget-convert `(leaf-edit
 				   :tag ,tag))))
     (funcall (na-default 'leaf :value-create) widget))) ; during value-create
+
+;;
+;;  added for the fsf port of the following function
+;;
+
+(if (not (fboundp 'event-button))
+    (defun event-button (event)
+      (let ((x (symbol-name (event-basic-type event))))
+	(if (not (string-match "^mouse-\\([0-9]+\\)" x))
+	    (error "Not a button event: %S" event))
+	(string-to-int (substring x (match-beginning 1) (match-end 1))))))
 
 (defun na-leaf-press-action (widget &optional event)
   "The function that gets called when you press on a leaf"
@@ -1320,6 +1340,13 @@ highly recursive and after entry, pool is not passed further down."
   (message
    "Now running N-Angulator (c) 2000 N-Angulator.org -- All rights reserved")
   (na-getmake-buffer "*N-Angulator*") ; create a buffer with the files name
+  ;;
+  ;;  attempting to port to fsf with the following two lines (from widget-example)
+  ;;
+
+  (let ((inhibit-read-only t))
+    (erase-buffer))
+  (remove-overlays)
 
   (mailcap-parse-mailcaps nil t) ; force reparse
 
@@ -1362,6 +1389,10 @@ highly recursive and after entry, pool is not passed further down."
   (setq na-angles (apply 'widget-create 'angle :path na-base-directory
 		   :pool (na-inodes default-directory) 
 	 '((item ""))))
+  ;;
+  ;; added to port to fsf (from widget-example)
+  ;;
+  (use-local-map (append widget-keymap (list '(down-mouse-3 . widget-button-click))))<
   (widget-setup))
 
 (defun na-lastnode (&optional widget)
