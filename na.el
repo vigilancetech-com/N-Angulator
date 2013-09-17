@@ -112,7 +112,7 @@
 ;(require 'mrg) ; comment out unless doing na-autolink
 
 (unless (featurep 'xemacs)
-  (defalias 'exec-to-string 'shell-command-to-string)
+  (defalias 'exec-to-string 'shell-command-to-string))
 ;;
 ;; might need to add this back in for fsf port
 ;;
@@ -1392,7 +1392,7 @@ highly recursive and after entry, pool is not passed further down."
   ;;
   ;; added to port to fsf (from widget-example)
   ;;
-  (use-local-map (append widget-keymap (list '(down-mouse-3 . widget-button-click))))<
+  (use-local-map (append widget-keymap (list '(down-mouse-3 . widget-button-click))))
   (widget-setup))
 
 (defun na-lastnode (&optional widget)
