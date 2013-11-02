@@ -112,6 +112,7 @@
 ;(require 'mrg) ; comment out unless doing na-autolink
 
 (unless (featurep 'xemacs)
+  (fset 'yes-or-no-p-dialog-box 'y-or-n-p)
   (defalias 'exec-to-string 'shell-command-to-string))
 ;;
 ;; might need to add this back in for fsf port
