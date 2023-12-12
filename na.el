@@ -1027,7 +1027,6 @@ when it is initialized"
 (define-widget 'root 'branch
   "What an 'angle gets turned into once it is initialized.  The corallary to 'branch
 in the node/branch situation"
-;  :create 'na-node-create
   :path na-base-directory
   :format "\n\n %[%t%]%v"
 )
