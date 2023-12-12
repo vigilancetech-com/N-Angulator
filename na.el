@@ -278,7 +278,6 @@ in the angles stack: na-angles"
 	   default-directory		;preserve current directory
 	   (child (car (widget-get nextwidget :children))) ; set directory to this widgets
 	   cname wpool apool dpool tmp)
-;      (when (eq (car child) 'leaf)	; skip leaves
       (when (eq (car nextwidget) 'leaf)
 	(na-pool-add inode child)
 	(throw 'done nil))
