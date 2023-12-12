@@ -816,13 +816,6 @@ newurl "\"><html>'  > \""
 			    "\"\' exists\! \""))))
 	(tmp widget)
 	(inode (na-inodes newname)))
-;    (while tmp
-;      (widget-put tmp :pool		;don't want to add to pool here if should be other
-;		(exec-to-string
-;		 (format "echo '%s' | sort -u"
-;			 (concat  (widget-get tmp :pool)
-;			inode))))
-;      (setq tmp (widget-get tmp :parent)))
     (na-error result)
     (na-pool-add inode)
     (na-rebuild-brmenus)
