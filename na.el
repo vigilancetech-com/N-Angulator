@@ -385,9 +385,6 @@ value if this widget did not override the parent"
 	(setq na-leaves (delq (car leaves) na-leaves))) ; remove it from na-leaves
       (setq leaves (cdr leaves))))) ; step through
 
-;  (while (not (eq widget (pop na-leaves))) ())) ; this needs to change to accomodate new na-pool-delete
-                                                ;   and screen updating.
-
 (defun na-leaf-create (widget)
   "Needed to be modified slightly to make sure the path is set correctly"
   (let* ((tag (widget-get widget :tag))
