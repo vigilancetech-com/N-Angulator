@@ -115,6 +115,10 @@
 
 (unless (featurep 'xemacs)
   (fset 'yes-or-no-p-dialog-box 'y-or-n-p)
+  (fset 'first 'cl-first)
+  (fset 'second 'cl-second)
+  (fset 'third 'cl-third)
+  (fset 'fourth 'cl-fourth)
   (defalias 'exec-to-string 'shell-command-to-string))
 ;;
 ;; might need to add this back in for fsf port
