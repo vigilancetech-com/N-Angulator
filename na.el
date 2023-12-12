@@ -245,21 +245,10 @@ in the angles stack: (na-lastnode)"
 	      buttons (widget-get child :buttons)) ; preserve grandchildren
 	(widget-put child :children nil) ; blast link to them
 	(widget-put child :buttons nil)
-;	(widget-put child :parent nil)  why this?
 	(widget-apply nextwidget :value-delete)  ; delete child from screen
-;	(funcall (na-default 'branch :value-delete) nextwidget)
-	;; now remove all deleted inodes from na-leaves
-;	(setq leaves na-leaves)
-;	(while leaves
-;	  (when ; child's name and path is same as head of na-leaves
-;	      (and (equal cname (widget-get (car leaves) :tag))
-;		   (equal (widget-get child :path) (widget-get (car leaves) :path)))
-;	    (setq na-leaves (delq (car leaves) na-leaves))) ; remove it from na-leaves
-;	  (setq leaves (cdr leaves))) ; step through
 	(widget-put nextwidget :children children) ; link around child
 	(widget-put nextwidget :buttons buttons)
 	(widget-put (car children) :parent nextwidget)
-;	(funcall (widget-get nextwidget :value-set) nextwidget child)
 	(cl-pushnew nextwidget na-need-br-rebuild)) ; flag this one for menu rebuild
       (unless (eq 0  ; any branch containing this inode needs menu rebuilding
 		  (length ; because it could have existed more than once here
