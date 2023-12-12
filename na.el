@@ -503,11 +503,6 @@ value if this widget did not override the parent"
 			    "\"")))
 	   (na-refresh-screen widget))))
 
-; the destination menu/pool does not get updated here
-; probably because the destination is not the current
-; widget, so it somehow needs to get set to that
-; then the 'current' widget updated
-; should be the same for all these 'select' functions
 (defun na-link-select ()
   "Link the selected leaf to the selection"
   (let* ((name (widget-get widget :tag))
