@@ -184,56 +184,6 @@
 
 (fset 'na-message 'message);'yes-or-no-p-dialog-box)
 
-;;What is the theory of autolink?  There could be a file extension type; to look the files up in the
-;;templates file; then in the templates file, the field, the base directory, then either a regular
-;;expression or s-expression that gives the link or links for the autolink.  If the s-expression returns
-;;more than one atomic string, then each string should be a link.  We need to set up a widget front end 
-;;for editing the templates file so that a clerk person could do it.  How do we determine whether the
-;;autolink contains a regular expression or a sexp?  Should there be a slot for each and run both
-;;in sucession?  No, just an sexp because xemacs doesn't have a good regular expression function, only
-;;string-match which just gives the starting address of the regexp in the string.
-;;If a list, execute as an sexp, if a symbol, evaluate, (in either of these cases, if a list of strings
-;;results, then link the source to each string destination), if a string, use it as the destination relative
-;;to the root of the nadb and just concatenate the value of the symbol
-;;So the format is:
-;;   (template (symbol-name (sexp) symbol-name "person/banker" symbol-name 'parselink-csz)
-;;    template (symbol-name "thing/precident/" symbol-name '(concat "event/continum/" (today)) etc...))
-
-;; called internally only from na-autolink because it relys on run-time scoping of na-autolink's
-;; local variables
-
-;(defun na-autolink-atom (atom)
-;  (setq result
-;	(na-shell-string-read ; need to do a mkdir -p but I need to check to see if the file is there
-;					; and a directory first; if so, then 
-;	 (concat "ln \"" myname "\" \""
-;		 (concat action
-;			 (when (string-match "/$" action) ; trailing slash = symbolval=target
-;			     value)) ; otherwise default buffer name or atom
-;			   "\"; echo $?"))) ; any error handling?  figure out for whole system
-;  result)
-
-;;(defun na-autolink ()
-;;  (let*((templates (load na-autolink-templates))
-;;	(myname (buffer-file-name))
-;;	(myext (cdr (split-string myname "^.+\\."))) ; extension of this template file
-;;	(symbol (intern myext))		; create a symbol from the string to search for on the templates
-;;	(template (get templates symbol)) ; find the template for this file extension
-;;	value action result argument)
-;;    (save-buffer)
-;;    (mrg-set-symbols myname) ; create all the symbols for this template file (why do I pass filename here?)
-;;    (while (car template)
-;;      (setq value (eval (car template))) ; get the symbol's value from mrg-set-symbols operation above
-;;      (setq (action (cadr template)))
-;;      (if (stringp action) ; template is a string representing target file/directory
-;;	  (na-autolink-atom action)
-;;	(if (listp action) ; sexp
-;;	    (setq result (or (mapcar 'na-autolink-atom (eval action))))
-;;	  (funcall action))) ; or symbol
-;;      (setq template (cddr template))))) ; symbol or sexp = eval it
-
-;; this would be real nice if it linked the default buffer name into the destination.  Will it work
-;; if there is no slash following?  Yes that will work but it needs to be *well* documented
 (defun na-date (base)
   "Return string representing link for format year/month/day"
   (let ((list (split-string value "[, ]+")))
