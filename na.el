@@ -980,11 +980,8 @@ and inode strings"
 (define-widget 'node 'branch ; the inherited widget has to do with how
   ;to interpret the args when creating this widget
   "a meta-type representing either a leaf or a branch"
-;  :mouse-down-action 'na-node-press-action
-;  :action 'na-node-release-action
-   :create 'na-node-create
-;   :format "%[%t%]"
-)
+   :create 'na-node-create)
+
 
 (defun na-node-create (widget)
   "Create a node by turning it into a leaf or a branch w/appropriate changes"
