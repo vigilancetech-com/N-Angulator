@@ -104,7 +104,7 @@
 (require 'widget)
 (eval-when-compile
   (require 'wid-edit))
-(eval-when-compile (require 'cl)) ; for case function
+(eval-when-compile (require 'cl-lib)) ; for cl-case function
 (require 'mailcap)
 ;(require 'mm)
 (require 'mm-view)
@@ -326,16 +326,16 @@ in the angles stack: (na-lastnode)"
 	(widget-put nextwidget :buttons buttons)
 	(widget-put (car children) :parent nextwidget)
 ;	(funcall (widget-get nextwidget :value-set) nextwidget child)
-	(pushnew nextwidget na-need-br-rebuild)) ; flag this one for menu rebuild
+	(cl-pushnew nextwidget na-need-br-rebuild)) ; flag this one for menu rebuild
       (unless (eq 0  ; any branch containing this inode needs menu rebuilding
 		  (length ; because it could have existed more than once here
 		   (na-iinboth apool inodeorig)))
-	(pushnew nextwidget na-need-br-rebuild))
+	(cl-pushnew nextwidget na-need-br-rebuild))
       (when (string-match ".+" inode)		; if there are any left to delete
 	(setq wpool (na-subtract wpoolorg inode)); eliminate from widget's pool ones actually found in this directory
 	(widget-put nextwidget :pool wpool)
 	(unless (eq (length wpool) (length wpoolorg)); if change, flag parent rebuid branch menu
-	  (pushnew nextwidget na-need-br-rebuild)))
+	  (cl-pushnew nextwidget na-need-br-rebuild)))
       (when parent;  not past top of 1st angle
 	(na-pool-delete inode parent inodeorig)))))
 
@@ -556,7 +556,7 @@ value if this widget did not override the parent"
 	(selected (widget-value na-selection)))
     (setq default-directory (widget-get widget :path)
 	  na-location widget)
-    (case button
+    (cl-case button
       (2
 	 (funcall (widget-choose
 		   "Leaf Command Menu"  
@@ -819,7 +819,7 @@ value if this widget did not override the parent"
 	(path (widget-get widget :path)))
     (setq default-directory (or path default-directory)
 	  na-location widget)
-    (case button
+    (cl-case button
       (2
 	 (funcall (widget-choose
 		   "Branch Command Menu" 
