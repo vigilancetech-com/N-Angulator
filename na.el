@@ -1057,11 +1057,6 @@ in the node/branch situation"
 				       (widget-value widget)) "/")
       na-base-directory)))
 
-
-;;
-;; Might make this use eshell someday
-;;
-
 (defun na-shell-read (command)
   "Execute shell 'command' in default-directory then 'read' in and
 return the results"
@@ -1239,3 +1234,4 @@ the :tag is nil but it has a value then it is a yet unclicked on branch"
     (widget-get last-result :parent)))
 
 (provide 'na)
+;;; na.el ends here
