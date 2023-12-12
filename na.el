@@ -30,8 +30,10 @@
 ;;
 ;; N-Angulator.org
 ;; Attn: KEVIN HADDOCK
-;; 975 East Ave. PMB 112
-;; Chico, CA 95926, USA.
+;; P.O. Box 70404
+;; Richmond, CA 94807-0404
+;;
+;; or email: support@n-angulator.org
 
 ;;; Commentary:
 ;;
@@ -97,7 +99,7 @@
 ;;
 ;;; Code:
 
-;(load "eshell-auto")
+                                        ;(load "eshell-auto")
 (require 'dired)
 (require 'widget)
 (eval-when-compile
