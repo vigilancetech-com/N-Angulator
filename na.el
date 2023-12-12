@@ -446,10 +446,6 @@ value if this widget did not override the parent"
 (defun na-dup-links ()
   "Link current leaf to all places selected leaf is linked."
   ; first get a list of all the branchnames selected has
-;  (setq savedir default-directory          ;; debugging stuff
-;	selected (concat na-base-directory (widget-value selection))
-;	existing (concat (widget-get widget :path)
-;			 (widget-get widget :tag)))
   (let ((default-directory "/") ; relying on dynamic scoping -- is this OK?
 	(selected (widget-value na-selection))
 	(existing (concat (widget-get widget :path)
