@@ -547,7 +547,7 @@ value if this widget did not override the parent"
       (let ((x (symbol-name (event-basic-type event))))
 	(if (not (string-match "^mouse-\\([0-9]+\\)" x))
 	    (error "Not a button event: %S" event))
-	(string-to-int (substring x (match-beginning 1) (match-end 1))))))
+	(string-to-number (substring x (match-beginning 1) (match-end 1))))))
 
 (defun na-leaf-press-action (widget &optional event)
   "The function that gets called when you press on a leaf"
