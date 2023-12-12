@@ -214,26 +214,6 @@ menu only needs to be rebuilt once.  Not a common occurrance but possible."
       (while (setq widget (pop na-need-br-rebuild))
 	(widget-put widget :args (na-branch-arguments widget))))))
 
-;;
-;; DEBUGGING NOTE:
-;;
-;; The following two functions may cause a bug in that they may put directory
-;; inodes into the pool (which has not been done so far).  This may become necessary
-;; in order to implement redisplay when a directory name has changed (since without the
-;; directory's inode, we have no way of telling what it's name was.
-;; Either I should make accomodations to have directory inodes be in all pools, or
-;; I should probably strip them out here (with a long ls listing and a grep -v '^d' on
-;; the output or by using find to only send to ls the regular file entries)
-;;
-;; after deletion, it appears to lose the fact that it already has a leaf selected
-;; so the branch menus ask to create a new leaf rather than add a link.
-;;
-;; Also, it makes the first leaf display a branch navigation menu.
-;;
-;; A thought: Set the child's grandchild to the (na-lastnode)'s child so that
-;; when the deletion comes down we have something that looks semi-normal
-;; for it to mess with.
-;
 ; Should probably do widget-setup after this and na-rebuild-brmenus
 (defun na-pool-delete (inode &optional nextwidget inodeorig)
   "remove inode(s) from nextwidget and its parents if that file does not
@@ -292,7 +272,6 @@ in the angles stack: (na-lastnode)"
 	  (cl-pushnew nextwidget na-need-br-rebuild)))
       (when parent;  not past top of 1st angle
 	(na-pool-delete inode parent inodeorig)))))
-
 
 
 (defun na-pool-add (inode &optional nextwidget)
