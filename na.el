@@ -390,27 +390,6 @@ value if this widget did not override the parent"
   (let* ((tag (widget-get widget :tag))
 	 (pool (na-inodes tag)))
     (widget-put widget :pool pool) ; this has to be intelligent.  If the pool
-    ;; would have had the leaf in it, then it is made a member, otherwise
-    ;; it is an other.  This presents a bit of a problem, because if you just
-    ;; created a leaf, you almost assuredly would want to select it, wouldn't
-    ;; you?  It would make no sense, though, to add it to the pool if that
-    ;; were impossible (e.g. prior angles exclude it).
-    ;; How do we tell if it is possible for the new leaf to be a member?  How
-    ;; about if there is another angle above the branch where this leaf is
-    ;; being created?  That would pretty much cinch it.  How do I test for
-    ;; that?
-    ;; Should not allow creation of leaves in any but the first angle.  Then
-    ;; blow away all entries after the subbranch wherein leaf was created.
-    ;; better yet: only show create-leaf menu item when there are items in 'members?'
-    ;; that way it can be made a member when created?
-    ;; is that right?
-    ;; leaf creation rules:
-    ;; - leaf will go into members if on first angle or all prior angles are subangels of this
-    ;; - otherwise leaf will go into others
-    ;;   (how to test for this?)
-    ;;   (should a leaf be able to be created in others?  I think so because otherwise
-    ;;    how do you create the fist leaf in the system?)
-    ;;   (also, 
     (widget-put widget :path default-directory) ; buggy line?
     (push widget na-leaves)
     (widget-put widget :args
