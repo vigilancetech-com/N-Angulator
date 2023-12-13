@@ -106,12 +106,12 @@
   (require 'wid-edit))
 (eval-when-compile (require 'cl-lib)) ; for cl-case function
 (require 'mailcap)
-;(require 'mm)
+                                        ;(require 'mm)
 (require 'mm-view)
-;(require 'mail-parse)
+                                        ;(require 'mail-parse)
 (require 'gnus)
 (require 'edebug)
-;(require 'mrg) ; comment out unless doing na-autolink
+                                        ;(require 'mrg) ; comment out unless doing na-autolink
 
 (unless (featurep 'xemacs)
   (fset 'yes-or-no-p-dialog-box 'y-or-n-p)
@@ -124,9 +124,9 @@
 ;; might need to add this back in for fsf port
 ;;
 
-  ;; (dolist (event-type '(mouse-1 mouse-2 mouse-3
-  ;; 				M-down-mouse-1 M-down-mouse-2 M-down-mouse-3))
-  ;;   (put event-type 'event-kind 'mouse-click))) 
+;; (dolist (event-type '(mouse-1 mouse-2 mouse-3
+;;     M-down-mouse-1 M-down-mouse-2 M-down-mouse-3))
+;;   (put event-type 'event-kind 'mouse-click)))
 
 (mailcap-add-mailcap-entry
  "application" "x-empty" 
@@ -141,10 +141,8 @@
    ("needsx11")
    (type   . "application/dvi")))
 
-
-
 (setq na-leaves '((dummy :pool ""))) ; where the leaf widgets get pushed so we know if one has been
-                                     ; selected (because menu behavior changes)
+                                        ; selected (because menu behavior changes)
 (setq na-angles nil) ; the base of the widget angles tree
 (setq na-need-br-rebuild nil) ; where widgets that need branches rebuilt get's pushed
 
@@ -154,29 +152,19 @@
   "True if desirous to edit leaf contents where-ever possible"
   :group 'na
   :type 'boolean)
-
 (defcustom na-base-directory "/home/nadb/"
   "Root dir of na sparse array objects"
   :group 'na
   :type '(directory))
-
 (defcustom na-control-directory (concat na-base-directory "/.control")
   "Root dir of na sparse array objects"
   :group 'na
   :type '(directory))
-
-;(defcustom na-autolink-templates
-;  "Default autolink templates file"
-;  (concat na-control-directory ".autolink-templates")
-;  :group 'na
-;  :type '(file))
-
 (defcustom na-root-tag "  /"
   "The default tag for each angle's root"
-  ; Might want this to reflect which angle number later (e.g. a format?)
+                                        ; Might want this to reflect which angle number later (e.g. a format?)
   :group 'na
   :type '(text))
-
 (defcustom na-new-angle-tag "New Angle"
   "The tag that get's displayed in the menu for the root"
   :group 'na
@@ -188,16 +176,13 @@
   "Return string representing link for format year/month/day"
   (let ((list (split-string value "[, ]+")))
     (concat base 
-    (mapconcat 'identity
-	       (list (third list) (first list) (second list)) "/"))))
-
+            (mapconcat 'identity
+                       (list (third list) (first list) (second list)) "/"))))
 (defun na-csz (base)
   "Return string representing link for formats '(zip state/city)"
   )
-
 (defun na-rebuild-brmenus (&optional candidate)
-
-"Rebuild the given widget's branch menu or all the menus flagged as
+  "Rebuild the given widget's branch menu or all the menus flagged as
 helneeding rebuilding by na-branch-delete if none given.  In either case,
 remove the rebuilt menu(s) from the list of ones flagged.
 
@@ -206,15 +191,14 @@ then a create and sometimes those may effect the same branch, however that branc
 menu only needs to be rebuilt once.  Not a common occurrance but possible."
   (let (widget)
     (if candidate
-	(progn
-	  (when (memq candidate na-need-br-rebuild)
-	    (setq na-need-br-rebuild
-		  (delq candidate na-need-br-rebuild)))
-	  (widget-put candidate :args (na-branch-arguments candidate)))
+        (progn
+          (when (memq candidate na-need-br-rebuild)
+            (setq na-need-br-rebuild
+                  (delq candidate na-need-br-rebuild)))
+          (widget-put candidate :args (na-branch-arguments candidate)))
       (while (setq widget (pop na-need-br-rebuild))
-	(widget-put widget :args (na-branch-arguments widget))))))
-
-; Should probably do widget-setup after this and na-rebuild-brmenus
+        (widget-put widget :args (na-branch-arguments widget))))))
+                                        ; Should probably do widget-setup after this and na-rebuild-brmenus
 (defun na-pool-delete (inode &optional nextwidget inodeorig)
   "remove inode(s) from nextwidget and its parents if that file does not
 exist in their directories.
@@ -222,47 +206,45 @@ exist in their directories.
 If nextwidget is not given, the deletion starts from the last widget
 in the angles stack: (na-lastnode)"
   (let* ((nextwidget (or nextwidget (na-lastnode))) ;if arg not given, start at end of stack
-	 (inodeorig (or inodeorig inode)) ; preserve the original inode list if first entering
-	 (parent (widget-get nextwidget :parent))
-	 (child (car (widget-get nextwidget :children)))
-	 (cname (and child (widget-get child :tag)))
-	 default-directory wpoolorg wpool regexp apool children buttons leaves)
-; moving the following statment up nearer the top of this function would make it quicker
-    (if (eq (car nextwidget) 'leaf)	;skip leaves
-	(na-pool-delete inode parent inodeorig)
+         (inodeorig (or inodeorig inode)) ; preserve the original inode list if first entering
+         (parent (widget-get nextwidget :parent))
+         (child (car (widget-get nextwidget :children)))
+         (cname (and child (widget-get child :tag)))
+         default-directory wpoolorg wpool regexp apool children buttons leaves)
+                                        ; moving the following statment up nearer the top of this function would make it quicker
+    (if (eq (car nextwidget) 'leaf) ;skip leaves
+        (na-pool-delete inode parent inodeorig)
       (setq default-directory (widget-get nextwidget :path) ; set it to nextwidget's
-	    wpoolorg (widget-get nextwidget :pool) ; get the widget's original pool
-	    apool
-	    (na-shell-read		; pool of inodes actually in this directory
-	     "echo -n \\\";find * -maxdepth 0 -type f -printf '%i\n' 2>/dev/null |sort|grep -v '^$'|uniq; echo \\\"")
-	    inode (na-isubtract apool inode))
+            wpoolorg (widget-get nextwidget :pool) ; get the widget's original pool
+            apool
+            (na-shell-read  ; pool of inodes actually in this directory
+             "echo -n \\\";find * -maxdepth 0 -type f -printf '%i\n' 2>/dev/null |sort|grep -v '^$'|uniq; echo \\\"")
+            inode (na-isubtract apool inode))
 ;;; handle deletion before flagging others for branch menu rebuilding
 ;;; so leaves don't get flagged for menu rebuilding. -- still doesn't work
       (when (and cname
-		 (not (equal cname na-root-tag))
-		 (not (file-exists-p cname))) ; delete widget from screen
-	(setq children (widget-get child :children)
-	      buttons (widget-get child :buttons)) ; preserve grandchildren
-	(widget-put child :children nil) ; blast link to them
-	(widget-put child :buttons nil)
-	(widget-apply nextwidget :value-delete)  ; delete child from screen
-	(widget-put nextwidget :children children) ; link around child
-	(widget-put nextwidget :buttons buttons)
-	(widget-put (car children) :parent nextwidget)
-	(cl-pushnew nextwidget na-need-br-rebuild)) ; flag this one for menu rebuild
+                 (not (equal cname na-root-tag))
+                 (not (file-exists-p cname))) ; delete widget from screen
+        (setq children (widget-get child :children)
+              buttons (widget-get child :buttons)) ; preserve grandchildren
+        (widget-put child :children nil) ; blast link to them
+        (widget-put child :buttons nil)
+        (widget-apply nextwidget :value-delete)  ; delete child from screen
+        (widget-put nextwidget :children children) ; link around child
+        (widget-put nextwidget :buttons buttons)
+        (widget-put (car children) :parent nextwidget)
+        (cl-pushnew nextwidget na-need-br-rebuild)) ; flag this one for menu rebuild
       (unless (eq 0  ; any branch containing this inode needs menu rebuilding
-		  (length ; because it could have existed more than once here
-		   (na-iinboth apool inodeorig)))
-	(cl-pushnew nextwidget na-need-br-rebuild))
-      (when (string-match ".+" inode)		; if there are any left to delete
-	(setq wpool (na-subtract wpoolorg inode)); eliminate from widget's pool ones actually found in this directory
-	(widget-put nextwidget :pool wpool)
-	(unless (eq (length wpool) (length wpoolorg)); if change, flag parent rebuid branch menu
-	  (cl-pushnew nextwidget na-need-br-rebuild)))
+                  (length ; because it could have existed more than once here
+                   (na-iinboth apool inodeorig)))
+        (cl-pushnew nextwidget na-need-br-rebuild))
+      (when (string-match ".+" inode)  ; if there are any left to delete
+        (setq wpool (na-subtract wpoolorg inode)); eliminate from widget's pool ones actually found in this directory
+        (widget-put nextwidget :pool wpool)
+        (unless (eq (length wpool) (length wpoolorg)); if change, flag parent rebuid branch menu
+          (cl-pushnew nextwidget na-need-br-rebuild)))
       (when parent;  not past top of 1st angle
-	(na-pool-delete inode parent inodeorig)))))
-
-
+        (na-pool-delete inode parent inodeorig)))))
 (defun na-pool-add (inode &optional nextwidget)
   "add inode(s) to nextwidget and its children if that/those file
 exists (i.e. have been added) in their directories.  Also update
@@ -270,83 +252,76 @@ branch menus for any branch wherein inode(s) is(are) found.
 
 If nextwidget is not given, the addition starts from the first widget
 in the angles stack: na-angles"
-; this is a convoluted mess and needs to be refactored, but hey, it works, mostly :-)
+                                        ; this is a convoluted mess and needs to be refactored, but hey, it works, mostly :-)
   (catch 'done
     (let* ((nextwidget (or nextwidget na-angles)) ;if arg not given, start at beginning of stack
-					; pool of inodes actually in widget's directory
-	   args ; steps through args to find child's new pool and set it
-	   default-directory		;preserve current directory
-	   (child (car (widget-get nextwidget :children))) ; set directory to this widgets
-	   cname wpool apool dpool tmp)
+                                        ; pool of inodes actually in widget's directory
+           args ; steps through args to find child's new pool and set it
+           default-directory  ;preserve current directory
+           (child (car (widget-get nextwidget :children))) ; set directory to this widgets
+           cname wpool apool dpool tmp)
       (when (eq (car nextwidget) 'leaf)
-	(na-pool-add inode child)
-	(throw 'done nil))
+        (na-pool-add inode child)
+        (throw 'done nil))
       (setq cname (widget-get child :tag)
-	    wpool (widget-get nextwidget :pool)
-	    default-directory (widget-get nextwidget :path)
-	    apool (na-shell-read		; pool of inodes actually in this directory
-		   "echo -n \\\";find * -maxdepth 0 -type f -printf '%i\n' 2>/dev/null|sort|grep -v '^$'|uniq; echo \\\"")
-	    dpool (na-shell-read	; pool of inodes representing directories
-		   "echo -n \\\";find * -maxdepth 0 -type d -printf '%i\n' 2>/dev/null|sort|grep -v '^$'|uniq; echo \\\""))
+            wpool (widget-get nextwidget :pool)
+            default-directory (widget-get nextwidget :path)
+            apool (na-shell-read  ; pool of inodes actually in this directory
+                   "echo -n \\\";find * -maxdepth 0 -type f -printf '%i\n' 2>/dev/null|sort|grep -v '^$'|uniq; echo \\\"")
+            dpool (na-shell-read ; pool of inodes representing directories
+                   "echo -n \\\";find * -maxdepth 0 -type d -printf '%i\n' 2>/dev/null|sort|grep -v '^$'|uniq; echo \\\""))
       (when (eq nextwidget na-angles) ; no nextwidget argument was given (i.e. first time through)
-	(setq tmp  ;tmp=inode w/directory ones removed
-	      (na-isubtract inode dpool))
-	(widget-put nextwidget :pool
-		    (setq wpool (na-iadd inode wpool))))
-;      (edebug)
-      (when (string-match		; if some of the inodes still in nextwidget's pool
-	   ".+" (na-iinboth inode wpool))  ; means they have not been made "others" by elimination yet
-	    (na-rebuild-brmenus nextwidget)	;rebuild it's branch menu (and remove from rebuilds list)
-	    (setq args (widget-get nextwidget :args))
-	    (if (widget-get child :path) ;nextwidget has children and they are "real"
-					;figure out which argument is child and set child's pool to that
-					;  argument's pool (thats just been updated with na-branch-arguments)
-		(while args ; some day need to see if setting child's pool to :choice's pool would work
-		  (when (or (equal (widget-get (car args) :tag) cname) ; to speed this up (eliminate looping)
-			    (and (equal cname na-root-tag)
-				 (equal (widget-get (car args) :tag) na-new-angle-tag)))
-		    (widget-put child :pool (widget-get (car args) :pool))
-		    (setq args nil))
-		  (setq args (cdr args)))
-	      (throw 'done nil))) ; otherwise bail out
-;	(edebug)
-	(when (or
-	       (string-match   ; some inodes exist in current directory
-		".+" (na-iinboth apool inode))
-					; this widget on list of ones needing rebuild
-	       (memq nextwidget na-need-br-rebuild))
-	  (na-rebuild-brmenus nextwidget))
+        (setq tmp  ;tmp=inode w/directory ones removed
+              (na-isubtract inode dpool))
+        (widget-put nextwidget :pool
+                    (setq wpool (na-iadd inode wpool))))
+                                        ;      (edebug)
+      (when (string-match  ; if some of the inodes still in nextwidget's pool
+             ".+" (na-iinboth inode wpool))  ; means they have not been made "others" by elimination yet
+        (na-rebuild-brmenus nextwidget) ;rebuild it's branch menu (and remove from rebuilds list)
+        (setq args (widget-get nextwidget :args))
+        (if (widget-get child :path) ;nextwidget has children and they are "real"
+                                        ;figure out which argument is child and set child's pool to that
+                                        ;  argument's pool (thats just been updated with na-branch-arguments)
+            (while args ; some day need to see if setting child's pool to :choice's pool would work
+              (when (or (equal (widget-get (car args) :tag) cname) ; to speed this up (eliminate looping)
+                        (and (equal cname na-root-tag)
+                             (equal (widget-get (car args) :tag) na-new-angle-tag)))
+                (widget-put child :pool (widget-get (car args) :pool))
+                (setq args nil))
+              (setq args (cdr args)))
+          (throw 'done nil))) ; otherwise bail out
+                                        ; (edebug)
+      (when (or
+             (string-match   ; some inodes exist in current directory
+              ".+" (na-iinboth apool inode))
+                                        ; this widget on list of ones needing rebuild
+             (memq nextwidget na-need-br-rebuild))
+        (na-rebuild-brmenus nextwidget))
       (unless (widget-get child :path) ; bail if no actual child
-	(throw 'done nil))
-;      (edebug)
+        (throw 'done nil))
+                                        ;      (edebug)
       (na-pool-add inode child)))) ; recurse in on 'child' (next node in stack)
-
-    
 (defsubst na-default (type keyword)
   "Get the value of the keyword from the type this widget is derived from, e.g. the 'default'
 value if this widget did not override the parent"
   (widget-get (get (widget-type (get type 'widget-type)) 'widget-type) keyword))
-
-
 (defun na-mime-method (name)
   (mailcap-mime-info
    (car
     (mail-header-parse-content-type
      (na-shell-string-read
       (format "%s; name=\"%s\""
-	      (format "file -i \"%s\" 2> /dev/null | cut -d ':' -f2- | tr -d ' \n'" name) name))))))
-
+              (format "file -i \"%s\" 2> /dev/null | cut -d ':' -f2- | tr -d ' \n'" name) name))))))
 (defun na-mime-handle (name)
   (mail-header-parse-content-type
    (format "%s; name=\"%s\""
-	   (na-shell-string-read
-	    (format "file -i \"%s\" 2> /dev/null | cut -d ':' -f2- | tr -d ' \n'" name))
-	   name)))
-
+           (na-shell-string-read
+            (format "file -i \"%s\" 2> /dev/null | cut -d ':' -f2- | tr -d ' \n'" name))
+           name)))
 (define-widget 'leaf-edit 'choice-item ; was 'leaf
   "The widget that actually edits the file"
-)
-
+  )
 (define-widget 'leaf 'menu-choice
   "the widget representing the actual file; the 'terminal node'"
   :format "%[%t%]%v"
@@ -355,23 +330,15 @@ value if this widget did not override the parent"
   :value-create 'na-leaf-create
   :value-delete 'na-leaf-delete
   :create 'na-node-create
-
-;   Need to pop up a menu of available applications if there are more
-;   than one acceptable one to display/edit a file, or have an edit v. view mode
-;   and preferred applications for each (like the first one in .mailcap be the viewer
-;   and if there is another one, have it be the default editor).
-
   :value-set (lambda (widget value)
-	       (if (eq  (widget-type (widget-get widget :explicit-choice))
-			'leaf-edit)
-		   (let ((name (widget-get widget :tag)))
+               (if (eq  (widget-type (widget-get widget :explicit-choice))
+                        'leaf-edit)
+                   (let ((name (widget-get widget :tag)))
 
-		     (setq foo (start-process "view" "*scratch*" "xdg-open"  name )))
-;		     (eshell-command (concat "xdg-open " "\"" name "\" &") "*scratch*"))
-			 ;There appears to be junk left in ~/tmp -- needs to be del'd
-		     (funcall (na-default 'leaf :value-set) widget value))))
-
-
+                     (setq foo (start-process "view" "*scratch*" "xdg-open"  name )))
+                                        ;       (eshell-command (concat "xdg-open " "\"" name "\" &") "*scratch*"))
+                                        ;There appears to be junk left in ~/tmp -- needs to be del'd
+                 (funcall (na-default 'leaf :value-set) widget value))))
 (defun na-leaf-delete (widget)
   "Remove widget from the na-leaves before completing the delete"
   (message "in na-leaf-delete")
@@ -380,26 +347,25 @@ value if this widget did not override the parent"
   (let ((leaves na-leaves))
     (while leaves
       (when ; widget's name and path is same as head of na-leaves
-	  (and (equal (widget-get widget :tag) (widget-get (car leaves) :tag))
-	       (equal (widget-get widget :path) (widget-get (car leaves) :path)))
-	(setq na-leaves (delq (car leaves) na-leaves))) ; remove it from na-leaves
+          (and (equal (widget-get widget :tag) (widget-get (car leaves) :tag))
+               (equal (widget-get widget :path) (widget-get (car leaves) :path)))
+        (setq na-leaves (delq (car leaves) na-leaves))) ; remove it from na-leaves
       (setq leaves (cdr leaves))))) ; step through
-
 (defun na-leaf-create (widget)
   "Needed to be modified slightly to make sure the path is set correctly"
   (let* ((tag (widget-get widget :tag))
-	 (pool (na-inodes tag)))
+         (pool (na-inodes tag)))
     (widget-put widget :pool pool) ; this has to be intelligent.  If the pool
     (widget-put widget :path default-directory) ; buggy line?
     (push widget na-leaves)
     (widget-put widget :args
-		(list
-		 (widget-convert `(angle
-				   :tag "New Angle"
-				   :pool ,pool
-				   :args ,(na-branch-arguments widget)))
-		 (widget-convert `(leaf-edit
-				   :tag ,tag))))
+                (list
+                 (widget-convert `(angle
+                                   :tag "New Angle"
+                                   :pool ,pool
+                                   :args ,(na-branch-arguments widget)))
+                 (widget-convert `(leaf-edit
+                                   :tag ,tag))))
     (funcall (na-default 'leaf :value-create) widget))) ; during value-create
 
 ;;
@@ -409,216 +375,203 @@ value if this widget did not override the parent"
 (if (not (fboundp 'event-button))
     (defun event-button (event)
       (let ((x (symbol-name (event-basic-type event))))
-	(if (not (string-match "^mouse-\\([0-9]+\\)" x))
-	    (error "Not a button event: %S" event))
-	(string-to-number (substring x (match-beginning 1) (match-end 1))))))
+        (if (not (string-match "^mouse-\\([0-9]+\\)" x))
+            (error "Not a button event: %S" event))
+        (string-to-number (substring x (match-beginning 1) (match-end 1))))))
 
 (defun na-leaf-press-action (widget &optional event)
   "The function that gets called when you press on a leaf"
   (setq na-location widget)
   (let ((button (event-button event))
-	(selected (widget-value na-selection)))
+        (selected (widget-value na-selection)))
     (setq default-directory (widget-get widget :path)
-	  na-location widget)
+          na-location widget)
     (cl-case button
       (2
-	 (funcall (widget-choose
-		   "Leaf Command Menu"  
-		   (append
-		    '(("Remove this Link" . na-remove-link))
-		    '(("Remove all Occurances" . na-purge-leaf))
-		    '(("Set as Selection" . na-set-selection))
-		    '(("Rename Leaf" . na-rename-leaf))
-		    '(("Edit All Angles" . na-all-angles))
-		    '(("Display all Angles" . na-all-angles-display))
-		    '(("Demote Node" . na-demote-node))
-		    (unless (equal "" selected)
-		      (if (string-match "/$" selected)
-			  (list
-			   '("Link to Selection" . na-link-select)
-			   '("Copy to Selection" . na-copy-select)
-			   '("Move to Selection" . na-move-select))
-			'(("Duplicate Links to Selected" . na-dup-links)))))
-		   event)))
-       (3
-	(funcall (na-default 'leaf :mouse-down-action) widget event)))))
-
+       (funcall (widget-choose
+                 "Leaf Command Menu"
+                 (append
+                  '(("Remove this Link" . na-remove-link))
+                  '(("Remove all Occurances" . na-purge-leaf))
+                  '(("Set as Selection" . na-set-selection))
+                  '(("Rename Leaf" . na-rename-leaf))
+                  '(("Edit All Angles" . na-all-angles))
+                  '(("Display all Angles" . na-all-angles-display))
+                  '(("Demote Node" . na-demote-node))
+                  (unless (equal "" selected)
+                    (if (string-match "/$" selected)
+                        (list
+                         '("Link to Selection" . na-link-select)
+                         '("Copy to Selection" . na-copy-select)
+                         '("Move to Selection" . na-move-select))
+                      '(("Duplicate Links to Selected" . na-dup-links)))))
+                 event)))
+      (3
+       (funcall (na-default 'leaf :mouse-down-action) widget event)))))
 (defun na-dup-links ()
   "Link current leaf to all places selected leaf is linked."
-  ; first get a list of all the branchnames selected has
+                                        ; first get a list of all the branchnames selected has
   (let ((default-directory "/") ; relying on dynamic scoping -- is this OK?
-	(selected (widget-value na-selection))
-	(existing (concat (widget-get widget :path)
-			  (widget-get widget :tag))))
+        (selected (widget-value na-selection))
+        (existing (concat (widget-get widget :path)
+                          (widget-get widget :tag))))
     (na-error
      (na-shell-string-read
-	    (mapconcat ; map a link of the existing file to all the directories that selected exists in
-	     (lambda (x)
-	       (format
-		"ln \"%s\" \"%s\""
-		existing (concat na-base-directory
-				 (substring x 0 (string-match "[^/]+$" x)))))
-	     (let ((default-directory na-base-directory)) ; create a local default-directory.
-					; depend on dynamic scoping so na-shell-read
-	                                ; will get it rather than the global version
-	       (na-shell-read
-		(format
-		 "echo -n \\(; find . -inum %i -printf '\"%%p\" '; echo \\)"
-		 (string-to-number
-		  (na-inodes (substring selected 1)))))) ";" )))))
-
+      (mapconcat ; map a link of the existing file to all the directories that selected exists in
+       (lambda (x)
+         (format
+          "ln \"%s\" \"%s\""
+          existing (concat na-base-directory
+                           (substring x 0 (string-match "[^/]+$" x)))))
+       (let ((default-directory na-base-directory)) ; create a local default-directory.
+                                        ; depend on dynamic scoping so na-shell-read
+                                        ; will get it rather than the global version
+         (na-shell-read
+          (format
+           "echo -n \\(; find . -inum %i -printf '\"%%p\" '; echo \\)"
+           (string-to-number
+            (na-inodes (substring selected 1)))))) ";" )))))
 (defun na-demote-node ()
   "Turn this leaf into a branch with itself as its first contents"
   (let* ((name (widget-get widget :tag))
-	 (newname (read-from-minibuffer "Enter new link name: "
-					(widget-get widget :tag)))
-	 (split (split-string newname "/"))
-	 (node (nth (1- (length split)) split))) ; what was I thinking here?
-	 (unless (eq "" newname)
-	   (na-error
-		 (na-shell-string-read
-		  (concat
-		   "tmpfile=na.demoted.$$;"
-		   "mv \"" 
-		   name
-		   "\" $tmpfile &&"
-		   "mkdir \"" name
-		   "\" 2>/dev/null&&"
-		   "mv $tmpfile \"" name "\"/\"" newname "\"")))
-	   (na-refresh-screen widget))))
-
+         (newname (read-from-minibuffer "Enter new link name: "
+                                        (widget-get widget :tag)))
+         (split (split-string newname "/"))
+         (node (nth (1- (length split)) split))) ; what was I thinking here?
+    (unless (eq "" newname)
+      (na-error
+       (na-shell-string-read
+        (concat
+         "tmpfile=na.demoted.$$;"
+         "mv \""
+         name
+         "\" $tmpfile &&"
+         "mkdir \"" name
+         "\" 2>/dev/null&&"
+         "mv $tmpfile \"" name "\"/\"" newname "\"")))
+      (na-refresh-screen widget))))
 (defun na-rename-leaf ()
   "Rename the selected leaf"
   (let* ((name (widget-get widget :tag))
-	 (newname (read-from-minibuffer "Enter new link name: "
-					(widget-get widget :tag)))
-	 (split (split-string newname "/"))
-	 (node (nth (1- (length split)) split))) ;; what was I thinking here?
-	 (unless (eq "" newname)
-	   (na-error
-		 (na-shell-string-read
-		  (concat "mv \""  name "\" \""
-			  (when (eq 0 (string-match "/" newname))
-			    na-base-directory)  newname
-			    "\"")))
-	   (na-refresh-screen widget))))
-
+         (newname (read-from-minibuffer "Enter new link name: "
+                                        (widget-get widget :tag)))
+         (split (split-string newname "/"))
+         (node (nth (1- (length split)) split))) ;; what was I thinking here?
+    (unless (eq "" newname)
+      (na-error
+       (na-shell-string-read
+        (concat "mv \""  name "\" \""
+                (when (eq 0 (string-match "/" newname))
+                  na-base-directory)  newname
+                "\"")))
+      (na-refresh-screen widget))))
 (defun na-link-select ()
   "Link the selected leaf to the selection"
   (let* ((name (widget-get widget :tag))
-	 (branchname (widget-value na-selection))
-	 (branchsplit (split-string branchname "/"))
-	 (branchnode (nth (1- (length branchsplit)) branchsplit))
-	 (newname (read-from-minibuffer "Enter new link name: " name)))
-	 (unless (eq "" branchname)
-	   (na-error
-		 (na-shell-string-read
-		  (concat "ln \""  name "\" \""
-			  (concat na-base-directory branchname
-			  newname "\""))))
-	   (na-pool-add branchnode)
-	   (na-rebuild-brmenus)
-	   (na-update-all-named branchnode)
-	   (na-update-all-named branchname))))
-  
+         (branchname (widget-value na-selection))
+         (branchsplit (split-string branchname "/"))
+         (branchnode (nth (1- (length branchsplit)) branchsplit))
+         (newname (read-from-minibuffer "Enter new link name: " name)))
+    (unless (eq "" branchname)
+      (na-error
+       (na-shell-string-read
+        (concat "ln \""  name "\" \""
+                (concat na-base-directory branchname
+                        newname "\""))))
+      (na-pool-add branchnode)
+      (na-rebuild-brmenus)
+      (na-update-all-named branchnode)
+      (na-update-all-named branchname))))
 (defun na-copy-select ()
   "Copy the selected leaf to the selection"
   (let* ((name (widget-get widget :tag))
-	 (branchname (widget-value na-selection))
-	 (branchsplit (split-string branchname "/"))
-	 (branchnode (nth (1- (length branchsplit)) branchsplit))
-	 (newname (read-from-minibuffer "Enter new leaf name: "
-					(widget-get widget :tag))))
-	 (unless (eq "" branchname)
-	   (na-error
-		 (na-shell-string-read
-		  (concat "cp \""  name "\" \""
-			  na-base-directory branchname
-			  newname "\"")))
-	   (na-pool-add branchnode)
-	   (na-rebuild-brmenus)
-	   (na-update-all-named  branchnode))))
-  
+         (branchname (widget-value na-selection))
+         (branchsplit (split-string branchname "/"))
+         (branchnode (nth (1- (length branchsplit)) branchsplit))
+         (newname (read-from-minibuffer "Enter new leaf name: "
+                                        (widget-get widget :tag))))
+    (unless (eq "" branchname)
+      (na-error
+       (na-shell-string-read
+        (concat "cp \""  name "\" \""
+                na-base-directory branchname
+                newname "\"")))
+      (na-pool-add branchnode)
+      (na-rebuild-brmenus)
+      (na-update-all-named  branchnode))))
 (defun na-move-select ()
   "move the selected leaf to the selection"
   (let* ((name (widget-get widget :tag))
-	 (branchname (widget-value na-selection))
-	 (branchsplit (split-string branchname "/"))
-	 (branchnode (nth (1- (length branchsplit)) branchsplit))
-	 (newname (read-from-minibuffer "Enter new leaf name: " name)))
-	 (unless (eq "" branchname)
-	   (na-error
-		 (na-shell-string-read
-		  (concat "mv \""  name "\" \""
-			  na-base-directory branchname
-			  newname "\"")))
-	   (na-pool-add branchnode)
-	   (na-rebuild-brmenus)
-	   (na-update-all-named  branchnode))))
-  
-
+         (branchname (widget-value na-selection))
+         (branchsplit (split-string branchname "/"))
+         (branchnode (nth (1- (length branchsplit)) branchsplit))
+         (newname (read-from-minibuffer "Enter new leaf name: " name)))
+    (unless (eq "" branchname)
+      (na-error
+       (na-shell-string-read
+        (concat "mv \""  name "\" \""
+                na-base-directory branchname
+                newname "\"")))
+      (na-pool-add branchnode)
+      (na-rebuild-brmenus)
+      (na-update-all-named  branchnode))))
 (defun na-purge-leaf ()
   "Remove the selected leaf entirely"
   (let* (temp
-	 (name (widget-get widget :tag))
-	 (inode (widget-get widget :pool))
-	 (parent (widget-get widget :parent))
-	 (parents (mapcar (lambda (x)	;get list of parents tag names
-			    (file-name-as-directory
-			     (file-name-nondirectory
-			      (substring x 1 (1- (length x))))))
-			  (mapcar 'file-name-directory (na-allnames-unsplit inode)))))
+         (name (widget-get widget :tag))
+         (inode (widget-get widget :pool))
+         (parent (widget-get widget :parent))
+         (parents (mapcar (lambda (x) ;get list of parents tag names
+                            (file-name-as-directory
+                             (file-name-nondirectory
+                              (substring x 1 (1- (length x))))))
+                          (mapcar 'file-name-directory (na-allnames-unsplit inode)))))
     (when (yes-or-no-p-dialog-box
-	   (format "Purge %s entirely?" name))
-      (setq temp default-directory	;(delete-file) works relative to default-directory
-	    default-directory na-base-directory) ;however we are handing files relative to
-      (mapcar 'delete-file (na-allnames-unsplit inode))	; na-base-directory
-      (setq default-directory temp)	;so we preserve it in temp
+           (format "Purge %s entirely?" name))
+      (setq temp default-directory ;(delete-file) works relative to default-directory
+            default-directory na-base-directory) ;however we are handing files relative to
+      (mapcar 'delete-file (na-allnames-unsplit inode)) ; na-base-directory
+      (setq default-directory temp) ;so we preserve it in temp
       (funcall (widget-get parent :value-delete) parent) 
       (na-pool-delete inode)
       (na-rebuild-brmenus)
       (na-update-all-named parents))))
-
 (defun na-remove-link ()
   "Delete the selected link"
   (let* ((name (widget-get widget :tag))
-	 (inode (widget-get widget :pool))
-	 (parent (widget-get widget :parent))
-	 (parent-name (widget-get parent :tag)))
+         (inode (widget-get widget :pool))
+         (parent (widget-get widget :parent))
+         (parent-name (widget-get parent :tag)))
     (when (yes-or-no-p-dialog-box (format "Delete link %s?" name))
       (na-error (na-shell-string-read
-		    (concat "rm -f \"" name "\"")))
-;	    (funcall (widget-get parent :value-delete) parent)
-	    (na-pool-delete inode)
-	    (na-rebuild-brmenus)
-	    (widget-setup))))
-
+                 (concat "rm -f \"" name "\"")))
+                                        ;     (funcall (widget-get parent :value-delete) parent)
+      (na-pool-delete inode)
+      (na-rebuild-brmenus)
+      (widget-setup))))
 (defun na-leaf-release-action (widget &optional event)
   "What get's called when you release the button on a leaf"
-    (setq default-directory (widget-get widget :path))
-      (funcall (na-default 'leaf :action) widget event))
-
-
+  (setq default-directory (widget-get widget :path))
+  (funcall (na-default 'leaf :action) widget event))
 (defun na-all-angles ()
   "Edit all angles for this widget's inode"
   (let ((inode (na-inodes (widget-get widget :tag)))
-	(pool (widget-get na-angles :pool))
-	(leaves na-leaves) ; save a copy of leaves stack
-	newangles leaves2)
+        (pool (widget-get na-angles :pool))
+        (leaves na-leaves) ; save a copy of leaves stack
+        newangles leaves2)
     (goto-char (point-max))
     (setq na-leaves '((dummy :pool ""))) ; reset stack to empty
     (setq newangles
-	  (widget-create
-	   (na-all-angles-list
-	    (na-allnames inode) na-base-directory
-	    (na-inodes na-base-directory)))
-	  leaves2 na-leaves ; save the new leaves stack
-	  na-leaves leaves) ; restore the old one for the upcoming delete
+          (widget-create
+           (na-all-angles-list
+            (na-allnames inode) na-base-directory
+            (na-inodes na-base-directory)))
+          leaves2 na-leaves ; save the new leaves stack
+          na-leaves leaves) ; restore the old one for the upcoming delete
     (widget-delete na-angles)
     (setq na-angles newangles
-	  na-leaves leaves2)
+          na-leaves leaves2)
     (widget-setup)))
-
 (defun na-all-angles-display ()
   "Show a read only popup dialog displaying all angles for this widget's inode"
   (let ((inode (widget-get (car na-leaves) :pool)))
@@ -627,31 +580,28 @@ value if this widget did not override the parent"
      :question
      (na-shell-string-read
       (format "(cd \"%s\";find * -inum %s -printf \"/%%p\n\n\" 2>/dev/null)"
-	      na-base-directory (substring inode 0 (1- (length inode)))))
+              na-base-directory (substring inode 0 (1- (length inode)))))
      :buttons '(["Dismiss" '() t]))))
-
-
-; a directory is just a node (choice-item) when it is a part
-; of a menu (of a parent)
+;; ; a directory is just a node (choice-item) when it is a part
+;; ; of a menu (of a parent)
 (define-widget 'branch 'menu-choice
   "A widget representing basically, a directory"
   :format "%[%t%]%v"
-;  :validate (lambda (x) t)
+                                        ;  :validate (lambda (x) t)
   :validate (lambda (x) ; invalid to select an 'other' leaf
-;	      (edebug)
-		(if (eq (widget-type x) 'node)
-		    (let (inode)
-		      (or
-		       (equal ""
-			      (setq inode    ; a leaf inode exists?
-				    (widget-get 
-				     (car na-leaves) :pool)))
-		       (equal inode (widget-get x :pool)))) ; pool = inode
-		  t))
+                                        ;       (edebug)
+              (if (eq (widget-type x) 'node)
+                  (let (inode)
+                    (or
+                     (equal ""
+                            (setq inode    ; a leaf inode exists?
+                                  (widget-get
+                                   (car na-leaves) :pool)))
+                     (equal inode (widget-get x :pool)))) ; pool = inode
+                t))
   :mouse-down-action 'na-branch-press-action
   :action 'na-branch-action
   :void '(item :format ""))
-
 
 ;;  truth table for following function (xor)
 ;; eventp  button!=3 action
@@ -661,107 +611,94 @@ value if this widget did not override the parent"
 ;;   1       0        1
 ;;   1       1        0
 
-  
 (defun na-branch-action (widget &optional event)
   "The function that get's called when you click on a branch"
   (when (or (not (eventp event)) (eq (event-button event) 3))
-      (funcall (na-default 'branch :action) widget event)))
-
-
+    (funcall (na-default 'branch :action) widget event)))
 (defun na-branch-press-action (widget &optional event)
   "What get's called when you press on a branch"
   (let ((button (event-button event))
-	(path (widget-get widget :path)))
+        (path (widget-get widget :path)))
     (setq default-directory (or path default-directory)
-	  na-location widget)
+          na-location widget)
     (cl-case button
       (2
-	 (funcall (widget-choose
-		   "Branch Command Menu" 
-		   (append
-		     (if (cdr na-leaves) ; any actively selected leaves?
-			 '(("Add a Link" . na-add-link))
-		       '(("Create New Leaf" . na-new-leaf)
-			 ("Create BookMark" . na-bookmark)))
-		     '(("Rename Branch" . na-rename-branch)) ; unless a root?
-		     '(("Set as Selection" . na-set-selection))
-		     '(("Add New Subbranch" . na-add-branch))
-		     '(("Prune Branch" . na-prune-branch))
-		     (unless (equal "" (widget-value na-selection))
-		       (list
-			'("Link Contents to Selection" . na-branch-link)
-			'("Copy Contents to Selection" . na-branch-copy)
-			'("Move Contents to Selection" . na-branch-move))))
-		   event)))
+       (funcall (widget-choose
+                 "Branch Command Menu"
+                 (append
+                  (if (cdr na-leaves) ; any actively selected leaves?
+                      '(("Add a Link" . na-add-link))
+                    '(("Create New Leaf" . na-new-leaf)
+                      ("Create BookMark" . na-bookmark)))
+                  '(("Rename Branch" . na-rename-branch)) ; unless a root?
+                  '(("Set as Selection" . na-set-selection))
+                  '(("Add New Subbranch" . na-add-branch))
+                  '(("Prune Branch" . na-prune-branch))
+                  (unless (equal "" (widget-value na-selection))
+                    (list
+                     '("Link Contents to Selection" . na-branch-link)
+                     '("Copy Contents to Selection" . na-branch-copy)
+                     '("Move Contents to Selection" . na-branch-move))))
+                 event)))
       (3
        (funcall (na-default 'branch :mouse-down-action) widget event)))))
-
 (defun na-branch-move ()
   "Move this branch and all the contents into the selection"
   (let* ((name (widget-get widget :tag))
-	 (branchname (widget-value na-selection))
-	 (branchsplit (split-string branchname "/"))
-	 (branchnode (nth (1- (length branchsplit)) branchsplit)) ; variable not used?
-	 (newname (read-from-minibuffer "Enter new branch name: " name)))
-	 (unless (eq "" branchname)
-	   (na-error
-		 (na-shell-string-read
-		  (concat "mv . \"" na-base-directory branchname newname 
-			  "\""))))
-	       (na-refresh-screen widget)))
-
-
+         (branchname (widget-value na-selection))
+         (branchsplit (split-string branchname "/"))
+         (branchnode (nth (1- (length branchsplit)) branchsplit)) ; variable not used?
+         (newname (read-from-minibuffer "Enter new branch name: " name)))
+    (unless (eq "" branchname)
+      (na-error
+       (na-shell-string-read
+        (concat "mv . \"" na-base-directory branchname newname
+                "\""))))
+    (na-refresh-screen widget)))
 (defun na-branch-copy ()
   "Link all the contents of this branch into the selection"
   (let* ((name (widget-get widget :tag))
-	 (branchname (widget-value na-selection))
-	 (branchsplit (split-string branchname "/"))
-;	 (branchnode (nth (1- (length branchsplit)) branchsplit))
-	 (newname (read-from-minibuffer "Enter new branch name: " name)))
-	 (unless (eq "" branchname)
-	   (na-error
-		 (na-shell-string-read
-		  (concat "find . -print | cpio -padm --quiet \"" 
-			  na-base-directory branchname  newname
-			  "\"")))
-	       (na-refresh-screen widget))))
-
+         (branchname (widget-value na-selection))
+         (branchsplit (split-string branchname "/"))
+                                        ;  (branchnode (nth (1- (length branchsplit)) branchsplit))
+         (newname (read-from-minibuffer "Enter new branch name: " name)))
+    (unless (eq "" branchname)
+      (na-error
+       (na-shell-string-read
+        (concat "find . -print | cpio -padm --quiet \""
+                na-base-directory branchname  newname
+                "\"")))
+      (na-refresh-screen widget))))
 (defun na-branch-link ()
   "Link all the contents of this branch into the selection"
   (let* ((name (widget-get widget :tag))
-	 (branchname (widget-value na-selection))
-	 (branchsplit (split-string branchname "/"))
-	 (branchnode (nth (- (length branchsplit) 2) branchsplit))
-	 (newname (read-from-minibuffer "Enter new branch name: " name)))
-	 (unless (eq "" branchname)
-	   (na-error
-		 (na-shell-string-read
-		  (concat "find . -print | cpio -padlm --quiet \"" 
-			  na-base-directory branchname  newname
-			  "\"")))
-	   (na-update-all-named (concat branchnode "/")))))
-
-
-
+         (branchname (widget-value na-selection))
+         (branchsplit (split-string branchname "/"))
+         (branchnode (nth (- (length branchsplit) 2) branchsplit))
+         (newname (read-from-minibuffer "Enter new branch name: " name)))
+    (unless (eq "" branchname)
+      (na-error
+       (na-shell-string-read
+        (concat "find . -print | cpio -padlm --quiet \""
+                na-base-directory branchname  newname
+                "\"")))
+      (na-update-all-named (concat branchnode "/")))))
 (defun na-rename-branch ()
   "This gets called from a branch menu to rename the branch"
   (let* ((tag (widget-get widget :tag))
-	 (newname (read-from-minibuffer (format "Rename %s to: " tag tag)))
-	 (result (when newname
-		   (na-shell-string-read
-		    (concat "cd ..;mv \"" tag "\" \""
-			     newname "\"")))))
+         (newname (read-from-minibuffer (format "Rename %s to: " tag tag)))
+         (result (when newname
+                   (na-shell-string-read
+                    (concat "cd ..;mv \"" tag "\" \""
+                            newname "\"")))))
     (na-error result)
-	(na-refresh-screen widget)))
-
-
+    (na-refresh-screen widget)))
 (defun na-set-selection ()
   "Set this branch as the selection for future copys or moves"
   (widget-value-set
    na-selection
    (na-path na-location))
   (widget-setup))
-
 (defun na-path (widget)
   "Return the string that represents the path to the given widget"
   (if (eq 'root (widget-type widget))
@@ -769,349 +706,315 @@ value if this widget did not override the parent"
     (concat
      (na-path
       (widget-get widget :parent))
-      (widget-get widget :tag))))
-
+     (widget-get widget :tag))))
 (defun na-add-branch ()
   "Create a new sub-branch under the current branch"
   (let* ((name (read-from-minibuffer "Enter new sub-branch name: "))
-	(result
-	 (na-shell-string-read
-	  (concat "mkdir \"" name "\";"))))
+         (result
+          (na-shell-string-read
+           (concat "mkdir \"" name "\";"))))
     (na-error result)
     (na-update-all-named (widget-get widget :tag))
     (widget-put widget :value (concat name "/"))))
-
 (defun na-prune-branch ()
   "Purge this branch and its subnodes"
   (let ((name (widget-get widget :tag))
-	(parent (widget-get widget :parent))
-	(inode (widget-get widget :pool))
-	result)
+        (parent (widget-get widget :parent))
+        (inode (widget-get widget :pool))
+        result)
     (when (yes-or-no-p-dialog-box
-	   (format "Delete branch %s and its contents?" name))
+           (format "Delete branch %s and its contents?" name))
       (na-error (na-shell-string-read
-		    (concat "(cd ..; rm -fr \"" name
-			    "\")")))
+                 (concat "(cd ..; rm -fr \"" name
+                         "\")")))
       (funcall (widget-get parent :value-delete) parent)
       (setq default-directory (widget-get parent :path))
       (na-pool-delete (widget-get widget :pool))
       (na-rebuild-brmenus)
       (na-update-all-named
        (widget-get parent :tag)))))
-
-; this function originally had the following line right after 'echo' below
-;<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">
+;; ; this function originally had the following line right after 'echo' below
+;; ;<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">
 (defun na-bookmark ()
   "Create a new bookmark under the current branch"
   (let* ((newname (read-from-minibuffer "Enter bookmark name: "))
-	 (newurl (read-from-minibuffer "Enter URL: " "http://www."))
-	 (result (when newname
-		   (na-shell-string-read
-		    (concat "test ! -e \"" newname
-			    "\" && echo '<html>
+         (newurl (read-from-minibuffer "Enter URL: " "http://www."))
+         (result (when newname
+                   (na-shell-string-read
+                    (concat "test ! -e \"" newname
+                            "\" && echo '<html>
 <meta http-equiv=\"REFRESH\" content=\"0;url="
-newurl "\"><html>'  > \""
-			     newname
-			    "\" || echo \"Error: File \'\"" newname
-			    "\"\' exists\! \""))))
-	(tmp widget)
-	(inode (na-inodes newname)))
+                            newurl "\"><html>'  > \""
+                            newname
+                            "\" || echo \"Error: File \'\"" newname
+                            "\"\' exists\! \""))))
+         (tmp widget)
+         (inode (na-inodes newname)))
     (na-error result)
     (na-pool-add inode)
     (na-rebuild-brmenus)
     (widget-setup)))
-
 (defun na-new-leaf ()
   "Create a new leaf under the current branch"
   (let* ((newname (read-from-minibuffer "Enter new leaf name: "))
-	 (result (when newname
-		   (na-shell-string-read
-		    (concat "test ! -e \"" newname "\" && > \""
-			     newname
-			    "\" || echo \"Error: File '\"" newname
-			    "\"' exists\! \""))))
-	(tmp widget)
-	(inode (na-inodes newname)))
+         (result (when newname
+                   (na-shell-string-read
+                    (concat "test ! -e \"" newname "\" && > \""
+                            newname
+                            "\" || echo \"Error: File '\"" newname
+                            "\"' exists\! \""))))
+         (tmp widget)
+         (inode (na-inodes newname)))
     (na-error result)
     (na-pool-add inode)
     (na-rebuild-brmenus)
     (widget-setup)))
-       	     
 (defun na-add-link ()
   "Create a new link for the given widget leaves (should all be same inode)"
   (let* ((leaf (car na-leaves))
-	 (path (widget-get leaf :path))
-	 (name (widget-get leaf :tag))
-	 (branchname (widget-get widget :tag))
-	 (newname (read-from-minibuffer "Enter new link name: "
-					 (widget-get leaf :tag)))
-	 (result
-	  (na-shell-string-read
-	   (concat "ln \"" (concat path name) "\" \""
-		   newname "\"")))
-	 (tmp widget)
-	 (inode (na-inodes newname)))
+         (path (widget-get leaf :path))
+         (name (widget-get leaf :tag))
+         (branchname (widget-get widget :tag))
+         (newname (read-from-minibuffer "Enter new link name: "
+                                        (widget-get leaf :tag)))
+         (result
+          (na-shell-string-read
+           (concat "ln \"" (concat path name) "\" \""
+                   newname "\"")))
+         (tmp widget)
+         (inode (na-inodes newname)))
     (na-error result)
     (na-pool-add inode)
     (na-rebuild-brmenus)
     (widget-setup))) ; new link will only show up on branch menus so
-                                       ; this is the proper refresh
-
-
+                                        ; this is the proper refresh
 (defun na-refresh-screen (widget &optional event)
   "update all node's menus stopping at any change"
   (goto-char (point-max)) ; put new tree at end
   (let* ((source na-angles)
-	 (newangles
-	  (apply 'widget-create 'angle :path na-base-directory
-		 :pool (na-inodes na-base-directory)
-		 '((item ""))))
-	 (select  newangles)
-	 (sourcechild (car (widget-get source :children)))
-	 (leaves na-leaves) ; save original na-leaves
-	 leaves2 path type pool tag choice args)
+         (newangles
+          (apply 'widget-create 'angle :path na-base-directory
+                 :pool (na-inodes na-base-directory)
+                 '((item ""))))
+         (select  newangles)
+         (sourcechild (car (widget-get source :children)))
+         (leaves na-leaves) ; save original na-leaves
+         leaves2 path type pool tag choice args)
     (setq na-leaves '((dummy :pool ""))) ; reinitialize na-leaves
     (catch 'changed
       (while (car (widget-get sourcechild :children))
-	(setq default-directory (setq path (widget-get select :path))
-	      pool (widget-get select :pool); Isn't this auto-generated somewhere?
-	      type (widget-type sourcechild)
-	      tag (widget-get sourcechild :tag)
-	      tag (if (equal tag na-root-tag)
-		      na-new-angle-tag
-		    tag))
-	(unless (equal tag na-new-angle-tag)
-	     (unless
-		 (directory-files ; file/directory still exists
-		  path
-		  nil ; not full names
-		  (concat "^"
-			  (car (split-string tag "/"))
-			  "$") ; match regexp
-		  t ; nosort
-		  nil)
-	     (throw 'changed t)))
-	(setq choice
-	      (let ((args (widget-get source :args))
-		    current found)
-		(while (and args (not found))
-			    (setq current (car args)
-				  args (cdr args)
-				  found
-				  (equal tag
-					 (widget-get
-					  current :tag))))
-		current))
-	(widget-put select :explicit-choice choice)
-	(widget-put select :value tag)
-	(widget-value-set select tag)
-	(setq source (car (widget-get source :children))
-	      sourcechild (car (widget-get source :children))
-	      select (car (widget-get select :children)))))
+        (setq default-directory (setq path (widget-get select :path))
+              pool (widget-get select :pool); Isn't this auto-generated somewhere?
+              type (widget-type sourcechild)
+              tag (widget-get sourcechild :tag)
+              tag (if (equal tag na-root-tag)
+                      na-new-angle-tag
+                    tag))
+        (unless (equal tag na-new-angle-tag)
+          (unless
+              (directory-files ; file/directory still exists
+               path
+               nil ; not full names
+               (concat "^"
+                       (car (split-string tag "/"))
+                       "$") ; match regexp
+               t ; nosort
+               nil)
+            (throw 'changed t)))
+        (setq choice
+              (let ((args (widget-get source :args))
+                    current found)
+                (while (and args (not found))
+                  (setq current (car args)
+                        args (cdr args)
+                        found
+                        (equal tag
+                               (widget-get
+                                current :tag))))
+                current))
+        (widget-put select :explicit-choice choice)
+        (widget-put select :value tag)
+        (widget-value-set select tag)
+        (setq source (car (widget-get source :children))
+              sourcechild (car (widget-get source :children))
+              select (car (widget-get select :children)))))
     (setq leaves2 na-leaves
-	  na-leaves leaves)
+          na-leaves leaves)
     (widget-delete na-angles)
     (setq na-leaves leaves2)
     (setq na-angles newangles)
     (widget-setup)))
-
 (defun na-update-all-named (name)
   "update all the widget's menus where the widgets are tagged with 'name'"
   (let ((child na-angles)  ;handles either a string naming the parent directory, or a list of strings
-	(names (if (stringp name) name
-		(apply 'concat name)))
-	cname)
+        (names (if (stringp name) name
+                 (apply 'concat name)))
+        cname)
     (while (setq cname (widget-get child :tag))
       (when (string-match cname names) ; when a value is getting deleted, it should be deleted here 
-					; as well to update the display properly.
-	(widget-put child :args (na-branch-arguments child)))
+                                        ; as well to update the display properly.
+        (widget-put child :args (na-branch-arguments child)))
       (setq child (car (widget-get child :children))))))
-
-(defsubst na-do-args (dirs files) 
+(defsubst na-do-args (dirs files)
   "Return a list of the node and leaf arguments from the given list of names
 and inode strings"
   (let (inode)
     (append
      (mapcar
       (lambda (x)
-	`(node :tag ,(concat (first x) "/")
-	       :path ,(concat default-directory (first x) "/")
-	       :value ,(first x)
-	       :pool ,(second x)
-	       :args ((choice-item ""))))
+        `(node :tag ,(concat (first x) "/")
+          :path ,(concat default-directory (first x) "/")
+          :value ,(first x)
+          :pool ,(second x)
+          :args ((choice-item ""))))
       dirs)
      (mapcar (lambda (x)
-	       `(leaf :tag ,(first x)
-		      :path ,default-directory
-		      :value ,(first x)
-		      :pool ,(second x)
-		      :inactive ,(equal (second x) "")
-		      :args ((angle
-			      :tag "New Angle"
-			      :format "\n\n %[%t%]%v" ; optional?
-			      :path ,na-base-directory
-			      :pool ,(second x)
-			      :value "New Angle"
-			      :args ((choice-item ""))))
-		      :args ((choice-item ""))))
-	     files))))
-
+               `(leaf :tag ,(first x)
+                 :path ,default-directory
+                 :value ,(first x)
+                 :pool ,(second x)
+                 :inactive ,(equal (second x) "")
+                 :args ((angle
+                         :tag "New Angle"
+                         :format "\n\n %[%t%]%v" ; optional?
+                         :path ,na-base-directory
+                         :pool ,(second x)
+                         :value "New Angle"
+                         :args ((choice-item ""))))
+                 :args ((choice-item ""))))
+             files))))
 (defsubst na-branch-arguments (widget)
   "Return a properly formatted :arg list for the given widget"
   (let* ((pool (widget-get widget :pool))
-	 (foo (setq default-directory (widget-get widget :path)))
-	 (data (na-shell-read
-		(concat "echo -n \"" pool "\" | na.members.sh"))))
+         (foo (setq default-directory (widget-get widget :path)))
+         (data (na-shell-read
+                (concat "echo -n \"" pool "\" | na.members.sh"))))
     (append
      `((angle :tag "New Angle"
-	      :format "\n\n %[%t%]%v"
-	      :path ,na-base-directory 
-	      :pool ,pool
-	      :value "New Angle"))
-	    ;  (choice-item "")))
+        :format "\n\n %[%t%]%v"
+        :path ,na-base-directory
+        :pool ,pool
+        :value "New Angle"))
+                                        ;  (choice-item "")))
      '((choice-item :value "-----------------"))
-;     '((choice-item :value "--single-line"))
+                                        ;     '((choice-item :value "--single-line"))
      (na-do-args (first data) (third data)) ;'member' branches and leaves
      '((choice-item :value "-----------------"))
-;     '((choice-item :value "--single-line"))
+                                        ;     '((choice-item :value "--single-line"))
      (na-do-args (second data) (fourth data))))) ;'other' branches and leaves
-
-
 (define-widget 'node 'branch ; the inherited widget has to do with how
-  ;to interpret the args when creating this widget
+                                        ;to interpret the args when creating this widget
   "a meta-type representing either a leaf or a branch"
-   :create 'na-node-create)
-
-
+  :create 'na-node-create)
 (defun na-node-create (widget)
   "Create a node by turning it into a leaf or a branch w/appropriate changes"
   (let ((path (widget-get widget :path))
-	(orig widget)
-; when working normal browsing, the following is not necessary, only when
-; showing-all-angles!  Why?  How do I correct for it?
-	(pool (or (widget-get widget :pool)
-			 (widget-get (widget-get widget :parent) :pool)))
-	(type (widget-type widget)))
+        (orig widget)
+                                        ; when working normal browsing, the following is not necessary, only when
+                                        ; showing-all-angles!  Why?  How do I correct for it?
+        (pool (or (widget-get widget :pool)
+                  (widget-get (widget-get widget :parent) :pool)))
+        (type (widget-type widget)))
     (cond ((or (eq type 'node) (eq type 'angle))
-; the documentation is not true when it says that the :create function returns
-; the widget.  it returns nil!  See how (widget-create) works.
-	   (setq default-directory
-		 (or path (concat default-directory (widget-get widget :tag))))
-	   (when (eq type 'angle)
-		 (widget-put widget :tag na-root-tag)) ; necessary?
-	   ; need to add this widget to its own pool and set it's parent
-	   ; pool accordingly;  Actually, need to add it to all the parent
-	   ; pools.
-	   (when pool ; probably the wrong stratgey for setting the pool
-	     (widget-put widget :pool pool))
-	   (widget-put widget :args (na-branch-arguments widget))
-	   (setcdr orig (cdr (widget-convert widget)))
-	   (setcar orig
-		   (or
-		    (or
-		     (and (eq type 'angle) 'root)
-		     (and (eq type 'node) 'branch))
-		    type))))
+                                        ; the documentation is not true when it says that the :create function returns
+                                        ; the widget.  it returns nil!  See how (widget-create) works.
+           (setq default-directory
+                 (or path (concat default-directory (widget-get widget :tag))))
+           (when (eq type 'angle)
+             (widget-put widget :tag na-root-tag)) ; necessary?
+                                        ; need to add this widget to its own pool and set it's parent
+                                        ; pool accordingly;  Actually, need to add it to all the parent
+                                        ; pools.
+           (when pool ; probably the wrong stratgey for setting the pool
+             (widget-put widget :pool pool))
+           (widget-put widget :args (na-branch-arguments widget))
+           (setcdr orig (cdr (widget-convert widget)))
+           (setcar orig
+                   (or
+                    (or
+                     (and (eq type 'angle) 'root)
+                     (and (eq type 'node) 'branch))
+                    type))))
     (funcall (na-default (widget-type widget) :create) orig)))
-
-
 (define-widget 'angle 'branch
   "This is the meta-widget that create is called on.  It get's turned into a 'root
 when it is initialized"
   :tag na-root-tag ; would like to change this into "angle # 1:" etc...
   :format "\n\n %[%t%]"
-  :create 'na-node-create		;this may change
+  :create 'na-node-create  ;this may change
   :path na-base-directory
-)
-
+  )
 (define-widget 'root 'branch
   "What an 'angle gets turned into once it is initialized.  The corallary to 'branch
 in the node/branch situation"
   :path na-base-directory
   :format "\n\n %[%t%]%v"
-)
-
-
+  )
 (define-widget 'either-or 'radio-button
   "Similar to radio buttons but both buttons cannot be 'off'"
   :action (lambda (widget)
-	    (if (or (widget-get)))))
-
+            (if (or (widget-get)))))
 (defgroup na nil
   "N-Angulator editor and support library"
   :link '(custom-manual "(nd)Top")
   :link '(url-link :tag "Development Page"
-		   "http://www.N-Angulator.org")
+          "http://www.N-Angulator.org")
   :prefix "widget-"
   :group 'extensions
   :group 'hypermedia)
-
-
-; untested
-
-(defun na-anglepath (widget)
+(defun na-anglepath (widget)            ;untested
   "Return the string representing the path to this widget"
   (let* ((parent (widget-get widget :parent)))
     (if parent
-	(mapconcat 'na-anglepath (list parent
-				       (widget-value widget)) "/")
+        (mapconcat 'na-anglepath (list parent
+                                       (widget-value widget)) "/")
       na-base-directory)))
-
 (defun na-shell-read (command)
   "Execute shell 'command' in default-directory then 'read' in and
 return the results"
   (read
    (setq after (exec-to-string
-    (setq before command)))))
-
+                (setq before command)))))
 (defun na-shell-string-read (command)
   "Execute shell 'command' in default-directory then 'read' in and
 return the results"
   (read (concat "\""
-   (setq after (exec-to-string
-    (setq before command))) "\"")))
-
-
+                (setq after (exec-to-string
+                             (setq before command))) "\"")))
 (defun na-inodes (file)
   "Return a quote delimited multi-line string of the inodes under or representing
 file/directory or if file, return its inode"
   (setq after (exec-to-string
-   (setq before (format
-    "find \"%s\" -type f -printf \"%%i\n\" 2>/dev/null|sort -u"
-;    "(cd \"%s\" ;find \"%s\" -printf \"%%i\n\" 2>/dev/null|sort -u )" ; make it include directories
-    file)))))
-
+               (setq before (format
+                             "find \"%s\" -type f -printf \"%%i\n\" 2>/dev/null|sort -u"
+                                        ;    "(cd \"%s\" ;find \"%s\" -printf \"%%i\n\" 2>/dev/null|sort -u )" ; make it include directories
+                             file)))))
 (defun na-isubtract (a b)
   "subtract the inodes in string b from the inodes in string b"
-  (let* ((regexp (dired-string-replace-match	; build "or" regular expressions out of inodes
-		    "..$" 
-		    (concat "^" (dired-string-replace-match "\n" b "$|^" nil t))
-		    "" nil t)))
+  (let* ((regexp (dired-string-replace-match ; build "or" regular expressions out of inodes
+                  "..$"
+                  (concat "^" (dired-string-replace-match "\n" b "$|^" nil t))
+                  "" nil t)))
     (na-shell-read ; strip out inodes
-		   (format "echo -n \\\";echo -n \"%s\"|grep -v \"%s\"|echo \\\""
-			   a regexp))))
-
+     (format "echo -n \\\";echo -n \"%s\"|grep -v \"%s\"|echo \\\""
+             a regexp))))
 (defun na-iadd (a b &optional c)
   "add sorted and uniquified the string(s) of inodes b to the string of inodes a"
   (na-shell-read
    (format "echo -n \\\";echo -n \"%s\"|sort|grep -v '^$'|uniq;echo -n \\\""
-	   (apply 'concat a b c))))
-
+           (apply 'concat a b c))))
 (defun na-iinboth (a b)
   "return the string of inodes that is in both a and b"
   (na-shell-read
    (format "echo -n \\\";echo -n \"%s\"|sort|grep -v '^$'|uniq -d;echo -n \\\"" (concat a b))))
-
-
 (defsubst na-allnames-unsplit (inode)
   "Return a list of strings of all the names
 of file represented by inode, relative to the na-base-directory"
   (let ((default-directory na-base-directory))
-     (na-shell-read
-      (format
-       "echo -n \\(; find . -inum %s -printf '\"%%p\" '; echo \\)"
-       (number-to-string (read inode))))))
-
+    (na-shell-read
+     (format
+      "echo -n \\(; find . -inum %s -printf '\"%%p\" '; echo \\)"
+      (number-to-string (read inode))))))
 (defun na-allnames (inode)
   "Return a list of lists of strings representing all the components of names
 of file represented by inode, relative to the na-base-directory"
@@ -1119,8 +1022,6 @@ of file represented by inode, relative to the na-base-directory"
     (mapcar
      (lambda (x) (cdr (split-string x "/")))
      (na-allnames-unsplit inode))))
-
-
 (defun na-all-angles-list (names path pool)
   "Generates the list compatible with widget-create given the result
 from na-allnames and the pool of all inodes below na-base-directory.
@@ -1128,39 +1029,34 @@ If the pool is not nil, then the initial angle is created, otherwise
 continuing nodes, leaves, and angles are created.  This function is
 highly recursive and after entry, pool is not passed further down."
   (let* ((angle (car names))  ;the angle we are working on
-	 (name (car angle))   ;name of next angle/leaf to construct
-	 (bname (concat name "/")) ; the name as a branch
-	 (bpath (concat path bname))) ; full path to the current node
-    (if pool				;first time in
-	`(angle :path ,na-base-directory  :value ,"/" ; was bname
-		:pool ,pool
-		:explicit-choice ,(na-all-angles-list names na-base-directory nil))
-      (if (cdr angle)			;not leaf
-	  `(node :tag ,bname :path ,bpath 
-		 :explicit-choice ,(na-all-angles-list (cons (cdar names) (cdr names)) bpath nil))
-	(append `(leaf :tag ,name)
-		(if (cdr names)
-		    `(:explicit-choice
-		      (angle :path ,na-base-directory
-			     :value ,(concat (caadr names) "/")
-			     :explicit-choice
-			     ,(na-all-angles-list
-			       (cdr names) na-base-directory nil)))))))))
-	       
-; Get buffer to do widgets in
-
+         (name (car angle))   ;name of next angle/leaf to construct
+         (bname (concat name "/")) ; the name as a branch
+         (bpath (concat path bname))) ; full path to the current node
+    (if pool    ;first time in
+        `(angle :path ,na-base-directory  :value ,"/" ; was bname
+          :pool ,pool
+          :explicit-choice ,(na-all-angles-list names na-base-directory nil))
+      (if (cdr angle)   ;not leaf
+          `(node :tag ,bname :path ,bpath
+            :explicit-choice ,(na-all-angles-list (cons (cdar names) (cdr names)) bpath nil))
+        (append `(leaf :tag ,name)
+                (if (cdr names)
+                    `(:explicit-choice
+                      (angle :path ,na-base-directory
+                             :value ,(concat (caadr names) "/")
+                             :explicit-choice
+                             ,(na-all-angles-list
+                               (cdr names) na-base-directory nil)))))))))
 (defun na-getmake-buffer (buffname)
   "Get or make buffer to do widgets/na in"
   (kill-buffer (get-buffer-create buffname))
   (switch-to-buffer (get-buffer-create buffname))
   (kill-all-local-variables))
-
 (defsubst na-error(text)
   "popup a dialog box with the error text if any"
   (unless (string= text "")
     (make-dialog-box 'question :modal nil :title "Error" 
-		     :question text :buttons '(["Dismiss" '() t]))))
-
+                     :question text :buttons '(["Dismiss" '() t]))))
 (defun na ()
   "Main entry to N-Angulator"
   (interactive)
@@ -1178,14 +1074,14 @@ highly recursive and after entry, pool is not passed further down."
   (mailcap-parse-mailcaps nil t) ; force reparse
 
   (widget-create 'push-button
-"                             Welcome to N-Angulator!                           ")
+                 "                             Welcome to N-Angulator!                           ")
   (widget-insert "\n")
   (widget-create 'push-button
-"          Persistent N-Dimensional Sparse Array, Editor, and Browser           ")
+                 "          Persistent N-Dimensional Sparse Array, Editor, and Browser           ")
   (widget-insert "\n")
   (widget-create 'push-button
-		 :action '(lambda (widget &optional event) (message "hit the copyright button"))
-"            Copyright (c) 2000 N-Angulator.org - All Rights Reserved.            ")
+                 :action '(lambda (widget &optional event) (message "hit the copyright button"))
+                 "            Copyright (c) 2000 N-Angulator.org - All Rights Reserved.            ")
 
   (widget-insert "\n\n                              ")
   (widget-create
@@ -1194,7 +1090,7 @@ highly recursive and after entry, pool is not passed further down."
 
   (widget-insert "\n\nCopy/Move/Link Selection:\n\n")
 
-; uncomment these when not debugging
+                                        ; uncomment these when not debugging
   (make-variable-buffer-local 'na-edit-mode)
   (make-variable-buffer-local 'na-base-directory)
   (make-variable-buffer-local 'na-control-directory)
@@ -1214,24 +1110,22 @@ highly recursive and after entry, pool is not passed further down."
   (setq na-leaves '((dummy :pool "")))
 
   (setq na-angles (apply 'widget-create 'angle :path na-base-directory
-		   :pool (na-inodes default-directory) 
-	 '((item ""))))
+                         :pool (na-inodes default-directory)
+                         '((item ""))))
   ;;
   ;; added to port to fsf (from widget-example)
   ;;
   (use-local-map (append widget-keymap (list '(down-mouse-3 . widget-button-click))))
   (widget-setup))
-
 (defun na-lastnode (&optional widget)
   "Return the last node in the angles (be it root, branch or leaf)
 Taking the :value of the returned widget will be the most reliable.  If
 the :tag is nil but it has a value then it is a yet unclicked on branch"
   (let* ((angles (or widget na-angles))
-	 (last-result angles)
-	 (this-result angles))
+         (last-result angles)
+         (this-result angles))
     (while (setq this-result (car (widget-get this-result :children )))
       (setq last-result this-result))
     (widget-get last-result :parent)))
-
 (provide 'na)
 ;;; na.el ends here
